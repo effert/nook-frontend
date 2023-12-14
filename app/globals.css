@@ -3,17 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
+  --primary-color: rgb(59 130 246);
+  --active-color: rgb(81 142 241);
+  --disabled-color: rgb(144 179 236);
 }
 
 .icon {

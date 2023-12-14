@@ -1,5 +1,12 @@
 {
   "index": {
     "welcome": "欢迎"
+  },
+  "login": {
+    "Sign In": "登录",
+    "account": "用户名",
+    "password": "密码",
+    "Enter your account": "请输入用户名",
+    "Enter your password": "请输入密码"
   }
 }

@@ -1,5 +1,12 @@
 {
   "index": {
     "welcome": "Welcome"
+  },
+  "login": {
+    "Sign In": "Sign In",
+    "account": "Account",
+    "password": "Password",
+    "Enter your account": "Enter your account",
+    "Enter your password": "Enter your password"
   }
 }
