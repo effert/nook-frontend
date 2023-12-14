@@ -5,6 +5,7 @@ export const i18n = {
 
 export type Locale = (typeof i18n)['locales'][number];
 
+export const defaultLocale = i18n.locales[0];
 const dictionaries = {
   en: () => import('@/public/locales/en.json').then((module) => module.default),
   'zh-cn': () =>

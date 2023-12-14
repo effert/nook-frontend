@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { Button } from 'antd';
 
 export default function LoginForm({ t }: { t: Record<string, string> }) {
   const [account, setAccount] = useState<string>();
@@ -48,15 +49,9 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
           placeholder={t['Enter your password']}
         />
       </div>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-[var(--primary-color)] hover:bg-[var(--active-color)] text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          onClick={handleSubmit}
-        >
-          {t['Sign In']}
-        </button>
-      </div>
+      <Button className="w-full" type="primary" onClick={handleSubmit}>
+        {t['Sign In']}
+      </Button>
     </form>
   );
 }

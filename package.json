@@ -13,7 +13,9 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.18.1",
     "@formatjs/intl-localematcher": "^0.4.0",
+    "antd": "^5.12.2",
     "js-cookie": "^3.0.5",
     "negotiator": "^0.6.3",
     "next": "^14.0.4",
