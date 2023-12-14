@@ -3,9 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #4c7df3;
-  --active-color: #2e65e8;
-  --disabled-color: #afc1ed;
+  --primary: #1668dc;
+  --active: #15417e;
+  --disabled: #8dc5f8;
+  --primary-dark: #8bbb11;
+  --active-dark: #536d13;
+  --disabled-dark: #e4f88b;
 }
 
 .icon {
@@ -14,4 +17,11 @@
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  background-color: unset;
+  background: unset;
 }
