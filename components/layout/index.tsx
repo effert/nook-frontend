@@ -25,17 +25,12 @@ const Layout = ({ children, lang }: LayoutProps) => {
   const { theme, setTheme } = useSysStore();
 
   useEffect(() => {
-    const initTheme = localStorage.theme;
-    setTheme(initTheme || 'light');
-  }, [localStorage.theme, setTheme]);
-
-  useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [localStorage, theme]);
+  }, [theme]);
 
   const handleChangeTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';

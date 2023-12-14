@@ -15,6 +15,7 @@ const LocaleProvider = ({ children, locale }: ProviderProps) => {
   dayjs.locale(locale);
   const { theme } = useSysStore();
 
+  console.log(1212, theme);
   return (
     <ConfigProvider
       locale={(i18n as any)[(locale as any) ?? defaultLocale]?.antd}
