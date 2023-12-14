@@ -1,11 +1,22 @@
+import en_US from 'antd/locale/en_US';
+import zh_CN from 'antd/locale/zh_CN';
+
 export const i18n = {
-  defaultLocale: 'en',
-  locales: ['en', 'zh-cn'],
-} as const;
+  en: {
+    lang: 'English',
+    antd: en_US,
+  },
+  'zh-cn': {
+    lang: 'Chinese',
+    antd: zh_CN,
+  },
+};
 
-export type Locale = (typeof i18n)['locales'][number];
+export type Locale = keyof typeof i18n;
 
-export const defaultLocale = i18n.locales[0];
+export const defaultLocale = Object.keys(i18n)[0] as Locale;
+export const localeList = Object.keys(i18n) as Locale[];
+
 const dictionaries = {
   en: () => import('@/public/locales/en.json').then((module) => module.default),
   'zh-cn': () =>
@@ -13,4 +24,4 @@ const dictionaries = {
 };
 
 export const getDictionary = async (locale: Locale) =>
-  dictionaries[i18n.locales.includes(locale) ? locale : i18n.defaultLocale]();
+  dictionaries[localeList.includes(locale) ? locale : defaultLocale]();
