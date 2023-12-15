@@ -1,31 +1,57 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Tooltip, Input, message } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { emailRegex } from '@/lib/reg';
+import fetcher from '@/lib/fetcher';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm({ t }: { t: Record<string, string> }) {
-  const [account, setAccount] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [account, setAccount] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [visible, setVisible] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (emailRegex.test(account)) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  }, [account]);
 
   const handleSubmit = async () => {
-    let resp = await fetch(`${process.env.BASE_URL}/login`, {
-      method: 'post',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
+    let resp = await fetcher({
+      url: '/login',
+      method: 'POST',
+      params: {
+        email: account,
+        password,
       },
-      body: JSON.stringify({ email: account, password }),
     });
-    let res = await resp.json();
-    if (res.success) {
-      localStorage.setItem('authorization', res.data.token);
-    } else {
-      message.error(res.message || res.data.error);
+    if (resp?.token) {
+      localStorage.setItem('authorization', resp?.token);
+      router.push('/');
     }
   };
+
+  const handleGetDynamicPassword = async () => {
+    let resp = await fetcher({
+      url: '/generate-temp-password',
+      method: 'GET',
+      params: {
+        email: account,
+      },
+    });
+    if (resp) {
+      message.success(resp.message);
+    }
+  };
+
   return (
     <form>
-      <div className="mb-4">
+      <div>
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
           htmlFor="account"
@@ -43,7 +69,14 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
           placeholder={t['Enter your account']}
         />
       </div>
-      <div className="mb-6">
+      {visible && (
+        <div className="flex justify-end">
+          <Button onClick={handleGetDynamicPassword} type="link">
+            {t['get dynamic password']}
+          </Button>
+        </div>
+      )}
+      <div className="mt-4 mb-6">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
           htmlFor="password"

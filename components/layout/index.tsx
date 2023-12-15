@@ -25,6 +25,11 @@ const Layout = ({ children, lang }: LayoutProps) => {
   const { theme, setTheme } = useSysStore();
 
   useEffect(() => {
+    const initTheme = localStorage.theme;
+    setTheme(initTheme || 'light');
+  }, []);
+
+  useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
