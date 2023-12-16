@@ -9,7 +9,7 @@
     "Enter your account": "请输入用户名",
     "Enter your password": "请输入密码",
     "Use email to get a dynamic password": "用邮箱来获得动态密码",
-    "get dynamic password": "获取动态密码"
+    "get password": "获取密码"
   },
   "fetch": {
     "request failed, please try again later": "请求失败, 请稍后重试"

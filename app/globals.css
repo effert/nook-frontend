@@ -6,9 +6,9 @@
   --primary: #1668dc;
   --active: #15417e;
   --disabled: #8dc5f8;
-  --primary-dark: #8bbb11;
-  --active-dark: #536d13;
-  --disabled-dark: #e4f88b;
+  --primary-dark: #1668dc;
+  --active-dark: #15417e;
+  --disabled-dark: #8dc5f8;
 }
 
 .icon {

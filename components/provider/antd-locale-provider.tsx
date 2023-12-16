@@ -25,9 +25,9 @@ const LocaleProvider = ({ children, locale }: ProviderProps) => {
           ? antdTheme.darkAlgorithm
           : antdTheme.defaultAlgorithm,
         token: {
-          colorPrimary: isDark(theme) ? '#8bbb11' : '#1668dc',
-          colorPrimaryActive: isDark(theme) ? '#536d13' : '#15417e',
-          colorBgContainerDisabled: isDark(theme) ? '#e4f88b' : '#8dc5f8',
+          colorPrimary: isDark(theme) ? '#1668dc' : '#1668dc',
+          colorPrimaryActive: isDark(theme) ? '#15417e' : '#15417e',
+          colorBgContainerDisabled: isDark(theme) ? '#8dc5f8' : '#8dc5f8',
         },
         cssVar: true,
       }}

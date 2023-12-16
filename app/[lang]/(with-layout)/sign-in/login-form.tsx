@@ -53,7 +53,7 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
     <form>
       <div>
         <label
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
           htmlFor="account"
         >
           {t['account']}
@@ -72,13 +72,13 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
       {visible && (
         <div className="flex justify-end">
           <Button onClick={handleGetDynamicPassword} type="link">
-            {t['get dynamic password']}
+            {t['get password']}
           </Button>
         </div>
       )}
       <div className="mt-4 mb-6">
         <label
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
           htmlFor="password"
         >
           {t['password']}

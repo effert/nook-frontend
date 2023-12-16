@@ -9,7 +9,7 @@
     "Enter your account": "Enter your account",
     "Enter your password": "Enter your password",
     "Use email to get a dynamic password": "Use email to get a dynamic password",
-    "get dynamic password": "Get dynamic password"
+    "get password": "Get password"
   },
   "fetch": {
     "request failed, please try again later": "request failed, please try again later"
