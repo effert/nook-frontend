@@ -41,9 +41,7 @@ const Layout = ({ children, lang }: LayoutProps) => {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 dark:bg-gray-800/90 dark:text-white">
-        {children}
-      </div>
+      {children}
     </div>
   );
 };

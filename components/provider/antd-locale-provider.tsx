@@ -5,7 +5,7 @@ import { i18n, defaultLocale } from '@/lib/utils/get-dictionary';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import useSysStore from '@/lib/stores/system';
-import { isDark } from '@/components/layout/switch-theme';
+import { isDark } from '@/lib/customHook/useInitTheme';
 
 export type ProviderProps = PropsWithChildren<{
   locale: Locale;
@@ -15,7 +15,6 @@ const LocaleProvider = ({ children, locale }: ProviderProps) => {
   dayjs.locale(locale);
   const { theme, isInit } = useSysStore();
 
-  // TODO 主题并没有切换,不知道为什么切换过路由后就正常了
   if (!isInit) {
     return <ConfigProvider>{children}</ConfigProvider>;
   }
