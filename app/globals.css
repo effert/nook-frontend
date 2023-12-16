@@ -18,10 +18,3 @@
   fill: currentColor;
   overflow: hidden;
 }
-button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
-  background-color: unset;
-  background: unset;
-}

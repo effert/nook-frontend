@@ -25,12 +25,13 @@ export default function SwitchTheme() {
     return {};
   }, []);
 
-  const { theme, setTheme } = useSysStore();
+  const { theme, setTheme, setInit } = useSysStore();
 
   useEffect(() => {
     const initTheme = localStorage.theme;
     setTheme(initTheme || 'light');
-  }, [localStorage, setTheme]);
+    setInit();
+  }, [localStorage, setTheme, setInit]);
 
   useEffect(() => {
     if (isDark(theme)) {

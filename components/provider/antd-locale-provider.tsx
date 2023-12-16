@@ -1,4 +1,3 @@
-'use client';
 import { PropsWithChildren } from 'react';
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import type { Locale } from '@/lib/utils/get-dictionary';
@@ -14,9 +13,12 @@ export type ProviderProps = PropsWithChildren<{
 
 const LocaleProvider = ({ children, locale }: ProviderProps) => {
   dayjs.locale(locale);
-  const { theme } = useSysStore();
+  const { theme, isInit } = useSysStore();
 
   // TODO 主题并没有切换,不知道为什么切换过路由后就正常了
+  if (!isInit) {
+    return <ConfigProvider>{children}</ConfigProvider>;
+  }
   return (
     <ConfigProvider
       locale={(i18n as any)[(locale as any) ?? defaultLocale]?.antd}

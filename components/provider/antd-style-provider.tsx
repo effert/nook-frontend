@@ -21,7 +21,11 @@ const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
       />
     );
   });
-  return <StyleProvider cache={cache}>{children}</StyleProvider>;
+  return (
+    <StyleProvider hashPriority="high" cache={cache}>
+      {children}
+    </StyleProvider>
+  );
 };
 
 export default StyledComponentsRegistry;
