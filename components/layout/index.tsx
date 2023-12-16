@@ -1,10 +1,7 @@
-'use client';
 import React from 'react';
 import type { Locale } from '@/lib/utils/get-dictionary';
-import Iconfont from '@/components/iconfont';
-import { usePathname, useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 import SwitchTheme from '@/components/layout/switch-theme';
+import SwitchLang from '@/components/layout/switch-lang';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,16 +9,6 @@ interface LayoutProps {
 }
 
 const Layout = ({ children, lang }: LayoutProps) => {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const handleChangeLang = () => {
-    const newLang = lang === 'zh-cn' ? 'en' : 'zh-cn';
-    Cookies.set('locale', newLang);
-    const newPathname = pathname.replace(lang, newLang);
-    router.push(newPathname);
-  };
-
   return (
     <div className="layout">
       <div className="sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-900/10 dark:border-slate-50/[0.06] bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-black dark:text-white">
@@ -30,13 +17,7 @@ const Layout = ({ children, lang }: LayoutProps) => {
             <div className="text-2xl font-semibold">NOOK</div>
             <div className="flex items-center gap-4">
               <SwitchTheme />
-              <Iconfont
-                onClick={handleChangeLang}
-                className={`text-2xl cursor-pointer ${
-                  lang === 'en' ? 'text-blue-400' : ''
-                }`}
-                type="icon-nooklanguage"
-              />
+              <SwitchLang lang={lang} />
             </div>
           </div>
         </div>

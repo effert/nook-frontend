@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import useSysStore, { TTheme } from '@/lib/stores/system';
 import { Dropdown, MenuProps } from 'antd';
 import { THEME, THEME_MAP } from '@/lib/constant';
