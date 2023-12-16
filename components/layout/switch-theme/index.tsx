@@ -13,7 +13,7 @@ export function isDark(theme: TTheme) {
   }
   return (
     theme === 'dark' ||
-    (!('theme' in localStorage) &&
+    ((!('theme' in localStorage) || theme === 'system') &&
       window.matchMedia('(prefers-color-scheme: dark)').matches)
   );
 }
@@ -30,7 +30,7 @@ export default function SwitchTheme() {
   useEffect(() => {
     const initTheme = localStorage.theme;
     setTheme(initTheme || 'light');
-  }, []);
+  }, [localStorage, setTheme]);
 
   useEffect(() => {
     if (isDark(theme)) {
@@ -38,14 +38,10 @@ export default function SwitchTheme() {
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme, localStorage]);
+  }, [theme]);
 
   const handleChangeTheme = (newTheme: TTheme) => {
-    if (newTheme === 'system') {
-      localStorage.removeItem('theme');
-    } else {
-      localStorage.theme = newTheme;
-    }
+    localStorage.theme = newTheme;
     setTheme(newTheme);
   };
 
