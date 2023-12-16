@@ -53,7 +53,7 @@ export default function SwitchTheme() {
         className="flex items-center gap-1"
       >
         <Iconfont
-          className="text-2xl cursor-pointer text-white"
+          className="text-sm md:text-xl cursor-pointer"
           type={ele.icon}
         />
         {ele.label}
@@ -63,10 +63,7 @@ export default function SwitchTheme() {
 
   return (
     <Dropdown menu={{ items }}>
-      <Iconfont
-        className="text-2xl cursor-pointer dark:text-white"
-        type={THEME_MAP[theme]}
-      />
+      <Iconfont className="text-2xl cursor-pointer" type={THEME_MAP[theme]} />
     </Dropdown>
   );
 }

@@ -8,7 +8,7 @@ interface SysState {
 }
 const useStore = create<SysState>((set) => ({
   theme: 'light',
-  setTheme: (theme) => set(() => ({ theme })),
+  setTheme: (theme) => set({ theme }),
 }));
 
 export default useStore;
