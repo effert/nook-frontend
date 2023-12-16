@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type TTheme = 'dark' | 'light';
+export type TTheme = 'dark' | 'light' | 'system';
 interface SysState {
   theme: TTheme;
   setTheme: (theme: TTheme) => void;

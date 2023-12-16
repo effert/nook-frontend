@@ -1,4 +1,3 @@
-import { getDictionary } from '@/lib/utils/get-dictionary';
 import type { Locale } from '@/lib/utils/get-dictionary';
 import Layout from '@/components/layout';
 

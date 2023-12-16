@@ -1,10 +1,10 @@
 'use client';
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
 import type { Locale } from '@/lib/utils/get-dictionary';
 import Iconfont from '@/components/iconfont';
 import { usePathname, useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import useSysStore from '@/lib/stores/system';
+import SwitchTheme from '@/components/layout/switch-theme';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,34 +14,6 @@ interface LayoutProps {
 const Layout = ({ children, lang }: LayoutProps) => {
   const pathname = usePathname();
   const router = useRouter();
-
-  let localStorage: any = useMemo(() => {
-    if (typeof window !== 'undefined') {
-      return window.localStorage;
-    }
-    return {};
-  }, []);
-
-  const { theme, setTheme } = useSysStore();
-
-  useEffect(() => {
-    const initTheme = localStorage.theme;
-    setTheme(initTheme || 'light');
-  }, []);
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
-  const handleChangeTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.theme = newTheme;
-  };
 
   const handleChangeLang = () => {
     const newLang = lang === 'zh-cn' ? 'en' : 'zh-cn';
@@ -57,13 +29,7 @@ const Layout = ({ children, lang }: LayoutProps) => {
           <div className="flex justify-between items-center py-4 border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 mx-4 lg:mx-0">
             <div className="text-2xl font-semibold">NOOK</div>
             <div className="flex items-center gap-4">
-              <Iconfont
-                onClick={handleChangeTheme}
-                className="text-2xl cursor-pointer text-white"
-                type={`${
-                  theme === 'dark' ? 'icon-nookdark' : 'icon-nooklight'
-                }`}
-              />
+              <SwitchTheme />
               <Iconfont
                 onClick={handleChangeLang}
                 className={`text-2xl cursor-pointer ${

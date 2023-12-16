@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Tooltip, Input, message } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { emailRegex } from '@/lib/reg';
+import { emailRegex } from '@/lib/constant/reg';
 import fetcher from '@/lib/fetcher';
 import { useRouter } from 'next/navigation';
 

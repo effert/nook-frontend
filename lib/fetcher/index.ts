@@ -62,7 +62,6 @@ const fetcher = async ({
       return data?.data;
     }
     // 如果请求失败
-    // TODO message 只能在组件内使用
     if (!silence) {
       message.error(
         data.message ||
