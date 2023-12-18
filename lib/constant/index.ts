@@ -25,3 +25,7 @@ export const THEME_MAP = {
   dark: 'icon-nookmoon',
   system: 'icon-nookcomputer',
 };
+
+export const TOKEN = 'authorization';
+
+export const USER_INFO = 'user_info';

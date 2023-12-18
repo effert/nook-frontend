@@ -5,12 +5,19 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { emailRegex } from '@/lib/constant/reg';
 import fetcher from '@/lib/fetcher';
 import { useRouter } from 'next/navigation';
+import { TOKEN, USER_INFO } from '@/lib/constant/index';
+import useStore from '@/lib/stores/user';
 
 export default function LoginForm({ t }: { t: Record<string, string> }) {
   const [account, setAccount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
+  const [user, setUser] = useStore(
+    (state) => [state.user, state.setUser] as const
+  );
+
+  console.log(21, user);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +38,9 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
       },
     });
     if (resp?.token) {
-      localStorage.setItem('authorization', resp?.token);
+      localStorage.setItem(TOKEN, `bearer ${resp.token}`);
+      localStorage.setItem(USER_INFO, JSON.stringify(resp.user));
+      setUser(resp.user);
       router.push('/');
     }
   };

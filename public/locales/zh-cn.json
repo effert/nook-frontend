@@ -13,5 +13,14 @@
   },
   "fetch": {
     "request failed, please try again later": "请求失败, 请稍后重试"
+  },
+  "chat": {
+    "note": "笔记",
+    "import": "导入",
+    "export": "导出",
+    "member": "成员",
+    "press 'Enter' to send": "按'Enter'发送",
+    "create": "新建",
+    "enter": "进入"
   }
 }

@@ -2,8 +2,7 @@ import 'client-only';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
 import { getDictionary, Locale } from '@/lib/utils/get-dictionary';
-
-const TOKEN = 'authorization'; // 自定义token
+import { TOKEN } from '@/lib/constant/index';
 
 export interface FetcherOptions {
   url: string;
@@ -49,7 +48,7 @@ const fetcher = async ({
   }
   // 查看当前本地是否有token, 如果有，设置自定义headers中TOKEN
   const token = localStorage.getItem(TOKEN);
-  if (token) options.headers['authorization'] = token;
+  if (token) options.headers[TOKEN] = token;
 
   const locale = Cookies.get('locale') as Locale;
   const D = await getDictionary(locale);

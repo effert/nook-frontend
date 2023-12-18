@@ -13,5 +13,14 @@
   },
   "fetch": {
     "request failed, please try again later": "request failed, please try again later"
+  },
+  "chat": {
+    "note": "Note",
+    "import": "Import",
+    "export": "Export",
+    "member": "Member",
+    "press 'Enter' to send": "Press 'Enter' to send",
+    "create": "Create",
+    "enter": "Enter"
   }
 }

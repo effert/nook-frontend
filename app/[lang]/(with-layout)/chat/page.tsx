@@ -1,12 +1,2 @@
-import React from 'react';
-
-const Page = () => {
-  return (
-    <div className="h-screen bg-gray-400">
-      <h1>Normal Page</h1>
-      <p>This is a normal page.</p>
-    </div>
-  );
-};
-
-export default Page;
+// [[room_id]] 这个模式会报错，目前还不支持
+export { default } from './[room_id]/page';
