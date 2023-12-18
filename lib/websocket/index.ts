@@ -11,7 +11,10 @@ class WebSocketService {
     };
 
     this.socket.onerror = (event: Event) => {
-      console.error(`WebSocket error: ${event}`);
+      console.error(`WebSocket error: ${event}, ${JSON.stringify(event)}}`);
+    };
+    this.socket.onclose = function (event) {
+      console.error('WebSocket connection closed:', event.code, event.reason);
     };
   }
 

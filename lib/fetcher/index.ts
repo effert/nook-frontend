@@ -43,7 +43,7 @@ const fetcher = async ({
     let connector = '?';
     if (url.includes('?')) connector = '&';
     url = `${url}${connector}${new URLSearchParams(params).toString()}`;
-  } else if (method === 'POST') {
+  } else {
     options.body = JSON.stringify(params);
   }
   // 查看当前本地是否有token, 如果有，设置自定义headers中TOKEN

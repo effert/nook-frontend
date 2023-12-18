@@ -90,7 +90,7 @@ export default function Room({
   return (
     <>
       <div className="flex-1 flex flex-col">
-        <div className="flex-1 border-b border-b-slate-400 p-3">
+        <div className="flex-1 border-b border-b-slate-400 py-3 px-6">
           {messages.map((ele, index) => (
             <div
               key={index}
@@ -98,8 +98,10 @@ export default function Room({
                 'text-right': ele.isSelf,
               })}
             >
-              <div className="text-sm">{ele.sender?.name}:</div>
-              <div className="text-xs">{ele.content}</div>
+              <div className="text-base">
+                {ele.sender?.name || t['anonymity']}:
+              </div>
+              <div className="text-sm mt-1">{ele.content}</div>
             </div>
           ))}
         </div>
