@@ -4,7 +4,25 @@ import { getDictionary } from '@/lib/utils/get-dictionary';
 import { Button } from 'antd';
 import Room from './room';
 import NewRoomBtn from './new-room-btn';
+import { cookies } from 'next/headers';
+import { TOKEN } from '@/lib/constant/index';
 
+async function fetchUserInfo() {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get(TOKEN);
+  if (authorization) {
+    const token = authorization.value;
+    let resp = await fetch(`${process.env.BASE_URL}/user-info`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      },
+    });
+    let res = await resp.json();
+    return res.data.user;
+  }
+}
 const Page = async ({
   params: { room_id, lang },
 }: {
@@ -12,6 +30,8 @@ const Page = async ({
 }) => {
   const D = await getDictionary(lang);
   const t = D.chat;
+
+  let userInfo = await fetchUserInfo();
 
   return (
     <div className="h-[calc(100vh-64px)] flex">
@@ -23,7 +43,7 @@ const Page = async ({
           <div className="p-2 cursor-pointer hover:bg-slate-800">xxx的聊天</div>
         </div>
         <div className="h-32 p-3">
-          <div className="p-2">用户名</div>
+          <div className="p-2">{userInfo.name}</div>
           <div className="p-2">{t['note']}</div>
         </div>
       </div>

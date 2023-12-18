@@ -7,6 +7,7 @@ import fetcher from '@/lib/fetcher';
 import { useRouter } from 'next/navigation';
 import { TOKEN, USER_INFO } from '@/lib/constant/index';
 import useStore from '@/lib/stores/user';
+import Cookies from 'js-cookie';
 
 export default function LoginForm({ t }: { t: Record<string, string> }) {
   const [account, setAccount] = useState<string>('');
@@ -17,7 +18,6 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
     (state) => [state.user, state.setUser] as const
   );
 
-  console.log(21, user);
   const router = useRouter();
 
   useEffect(() => {
@@ -38,6 +38,7 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
       },
     });
     if (resp?.token) {
+      Cookies.set(TOKEN, `bearer ${resp.token}`);
       localStorage.setItem(TOKEN, `bearer ${resp.token}`);
       localStorage.setItem(USER_INFO, JSON.stringify(resp.user));
       setUser(resp.user);
