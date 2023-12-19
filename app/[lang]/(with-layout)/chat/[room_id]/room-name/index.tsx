@@ -24,7 +24,6 @@ export default function RoomName({
 
   const handleBlur = async () => {
     setIsEdit(false);
-    console.log(12, roomName);
     let resp = await fetcher({
       url: `/room/${roomId}`,
       method: 'PUT',
@@ -32,7 +31,6 @@ export default function RoomName({
         roomName,
       },
     });
-    console.log(1212, resp);
   };
 
   return (

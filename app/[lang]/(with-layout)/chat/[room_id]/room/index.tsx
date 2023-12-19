@@ -5,13 +5,14 @@ import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
 import { TOKEN } from '@/lib/constant/index';
 import classnames from 'classnames';
+import { findIndex } from 'lodash';
 
 type TMessageType = 'text' | 'image' | 'file' | 'member'; // member 表示成员变动
 
 type TMessage = {
   type: TMessageType;
   content: string; // type 为 member 时,content 为成员变动的类型(join,leave)
-  sender: TUser | null; // type 为 member 时, sender 为成员名 null说明是匿名用户
+  sender: TUser; // type 为 member 时, sender 为成员
   time: number;
   isSelf?: boolean;
 };
@@ -30,7 +31,9 @@ export default function Room({
   useEffect(() => {
     const token = localStorage.getItem(TOKEN);
     WebSocketService.connect(
-      `${process.env.WEBSOCKET_URL}/${roomId}?authorization=${token}`,
+      `${process.env.WEBSOCKET_URL}/${roomId}?authorization=${
+        token || 'anonymous'
+      }`,
       (msg) => {
         const newMessage: TMessage = JSON.parse(msg);
         if (newMessage.type === 'member') {
@@ -47,38 +50,16 @@ export default function Room({
 
   function handleMemberChange(newMessage: TMessage) {
     if (newMessage.content === 'join') {
-      // 有新成员加入
-      if (!newMessage.sender) {
-        setMembers((prevMembers) => [
-          ...prevMembers,
-          {
-            id: members.length + 1,
-            email: '匿名用户',
-            name: '匿名用户',
-          },
-        ]);
-      } else {
-        setMembers((prevMembers) => [
-          ...prevMembers,
-          newMessage.sender as TUser,
-        ]);
+      // 去重
+      let index = findIndex(members, { id: newMessage.sender.id });
+      if (index < 0) {
+        setMembers((prevMembers) => [...prevMembers, newMessage.sender]);
       }
     } else if (newMessage.content === 'leave') {
       // 有成员离开
-      if (!newMessage.sender) {
-        // 删除第一个找到的匿名用户
-        let index = members.findIndex((ele) => ele.email === '匿名用户');
-        if (index !== -1) {
-          setMembers((prevMember) => {
-            prevMember.splice(index, 1);
-            return prevMember;
-          });
-        }
-      } else {
-        setMembers((prevMember) =>
-          prevMember.filter((ele) => ele.id !== newMessage.sender?.id)
-        );
-      }
+      setMembers((prevMember) =>
+        prevMember.filter((ele) => ele.id !== newMessage.sender.id)
+      );
     }
   }
 
@@ -99,7 +80,7 @@ export default function Room({
               })}
             >
               <div className="text-base">
-                {ele.sender?.name || t['anonymity']}:
+                {ele.sender.name || t['anonymity']}:
               </div>
               <div className="text-sm mt-1">{ele.content}</div>
             </div>

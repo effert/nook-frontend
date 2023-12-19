@@ -23,7 +23,7 @@ async function fetchUserInfo() {
     let res = await resp.json();
     return res.data.user;
   }
-  return {};
+  return null;
 }
 
 async function getRoomList() {
@@ -39,7 +39,7 @@ async function getRoomList() {
       },
     });
     let res = await resp.json();
-    return res.data.data.rooms;
+    return res.data.data;
   }
   return [];
 }
@@ -66,6 +66,7 @@ const Page = async ({
   let userInfo = await fetchUserInfo();
   let roomList = await getRoomList();
   let roomInfo = await getRoomInfo(room_id);
+  console.log('roomList', roomList);
 
   return (
     <div className="h-[calc(100vh-64px)] flex">
@@ -91,7 +92,7 @@ const Page = async ({
       </div>
       <div className="flex-1 flex flex-col">
         <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
-          <RoomName name={roomInfo.roomName} roomId={room_id} />
+          <RoomName name={roomInfo?.roomName} roomId={room_id} />
           <div className="flex gap-2 items-center">
             <Button className="text-xs" size="small">
               {t['import']}
