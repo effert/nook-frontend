@@ -13,7 +13,7 @@ const LoginPage: React.FC<{
     <div className="flex justify-center items-center h-screen">
       <div className="bg-white dark:bg-neutral-800 shadow-md rounded w-80 px-8 pt-6 pb-8 mb-4">
         <h2 className="text-2xl font-bold mb-6">{t['Sign In']}</h2>
-        <LoginForm t={t} />
+        <LoginForm t={t} lang={lang} />
       </div>
     </div>
   );

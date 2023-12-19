@@ -8,8 +8,15 @@ import { useRouter } from 'next/navigation';
 import { TOKEN, USER_INFO } from '@/lib/constant/index';
 import useStore from '@/lib/stores/user';
 import Cookies from 'js-cookie';
+import type { Locale } from '@/lib/utils/get-dictionary';
 
-export default function LoginForm({ t }: { t: Record<string, string> }) {
+export default function LoginForm({
+  t,
+  lang,
+}: {
+  t: Record<string, string>;
+  lang: Locale;
+}) {
   const [account, setAccount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
@@ -42,7 +49,7 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
       localStorage.setItem(TOKEN, `bearer ${resp.token}`);
       localStorage.setItem(USER_INFO, JSON.stringify(resp.user));
       setUser(resp.user);
-      router.push('/');
+      router.push(`/${lang}`);
     }
   };
 
@@ -93,6 +100,7 @@ export default function LoginForm({ t }: { t: Record<string, string> }) {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder={t['Enter your password']}
+          onPressEnter={handleSubmit}
         />
       </div>
       <Button className="w-full" type="primary" onClick={handleSubmit}>

@@ -20,12 +20,14 @@ const { TextArea } = Input;
 export default function Room({
   t,
   roomId,
+  propMemebers = [],
 }: {
   t: Record<string, string>;
   roomId: string;
+  propMemebers?: TUser[];
 }) {
   const [messages, setMessages] = useState<TMessage[]>([]);
-  const [members, setMembers] = useState<TUser[]>([]);
+  const [members, setMembers] = useState<TUser[]>(propMemebers);
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -53,7 +55,8 @@ export default function Room({
       // 去重
       let index = findIndex(members, { id: newMessage.sender.id });
       if (index < 0) {
-        setMembers((prevMembers) => [...prevMembers, newMessage.sender]);
+        const newMembers = [...members, newMessage.sender];
+        setMembers(newMembers);
       }
     } else if (newMessage.content === 'leave') {
       // 有成员离开

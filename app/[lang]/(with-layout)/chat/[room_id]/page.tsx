@@ -7,6 +7,8 @@ import NewRoomBtn from './new-room-btn';
 import RoomName from './room-name';
 import { cookies } from 'next/headers';
 import { TOKEN } from '@/lib/constant/index';
+import { TRoom } from '@/lib/types/global';
+import { findIndex } from 'lodash';
 
 async function fetchUserInfo() {
   const cookieStore = cookies();
@@ -55,6 +57,17 @@ async function getRoomInfo(roomId: string) {
   return res.data.data;
 }
 
+async function getRoomMembers(roomId: string) {
+  let resp = await fetch(`${process.env.BASE_URL}/room/${roomId}/users`, {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  let res = await resp.json();
+  return res.data.data;
+}
+
 const Page = async ({
   params: { room_id, lang },
 }: {
@@ -66,22 +79,32 @@ const Page = async ({
   let userInfo = await fetchUserInfo();
   let roomList = await getRoomList();
   let roomInfo = await getRoomInfo(room_id);
-  console.log('roomList', roomList);
+  let members = await getRoomMembers(room_id);
+
+  function mergeRoomList(roomList: TRoom[], roomInfo: TRoom) {
+    let index = findIndex(roomList, { id: roomInfo.id });
+    if (index < 0) {
+      roomList.push(roomInfo);
+    } else {
+      roomList[index] = roomInfo;
+    }
+    return roomList;
+  }
 
   return (
     <div className="h-[calc(100vh-64px)] flex">
       <div className="w-60 border-r border-r-slate-400 flex flex-col">
         <div className="overflow-y-auto flex-1 px-3 pt-4 border-b border-b-slate-400">
           <NewRoomBtn t={t} />
-          <div className="px-2 py-1 my-2 cursor-pointer hover:bg-slate-800">
-            xxx的聊天
-          </div>
-          <div className="px-2 py-1 my-2 cursor-pointer hover:bg-slate-800">
-            xxx的聊天
-          </div>
-          <div className="px-2 py-1 my-2 cursor-pointer hover:bg-slate-800">
-            xxx的聊天
-          </div>
+          {mergeRoomList(roomList, roomInfo).map((ele: TRoom) => (
+            <a
+              key={ele.id}
+              className="block px-2 py-1 my-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800"
+              href={`/chat/${ele.id}`}
+            >
+              {ele.roomName}
+            </a>
+          ))}
         </div>
         {userInfo && (
           <div className="h-32 p-3">
@@ -103,7 +126,7 @@ const Page = async ({
           </div>
         </div>
         <div className="flex flex-1">
-          <Room t={t} roomId={room_id} />
+          <Room t={t} roomId={room_id} propMemebers={members} />
         </div>
       </div>
     </div>

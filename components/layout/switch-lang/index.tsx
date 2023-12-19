@@ -1,5 +1,6 @@
 'use client';
 import type { Locale } from '@/lib/utils/get-dictionary';
+import { useEffect } from 'react';
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
 import { usePathname, useRouter } from 'next/navigation';
@@ -7,6 +8,10 @@ import { usePathname, useRouter } from 'next/navigation';
 export default function SwitchLang({ lang }: { lang: Locale }) {
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    Cookies.set('locale', lang);
+  }, []);
 
   const handleChangeLang = () => {
     const newLang = lang === 'zh-cn' ? 'en' : 'zh-cn';
