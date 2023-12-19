@@ -20,14 +20,14 @@ const { TextArea } = Input;
 export default function Room({
   t,
   roomId,
-  propMemebers = [],
+  propMembers = [],
 }: {
   t: Record<string, string>;
   roomId: string;
-  propMemebers?: TUser[];
+  propMembers?: TUser[];
 }) {
   const [messages, setMessages] = useState<TMessage[]>([]);
-  const [members, setMembers] = useState<TUser[]>(propMemebers);
+  const [members, setMembers] = useState<TUser[]>(propMembers);
   const [text, setText] = useState('');
 
   useEffect(() => {

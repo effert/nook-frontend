@@ -22,6 +22,12 @@
     "press 'Enter' to send": "Press 'Enter' to send",
     "create": "Create",
     "enter": "Enter",
-    "anonymity": "Anonymity"
+    "anonymity": "Anonymity",
+    "enter room": "Enter room",
+    "room id": "roomId",
+    "password": "password",
+    "Please input roomId!": "Please input roomId!",
+    "set password": "Set password",
+    "save": "Save"
   }
 }

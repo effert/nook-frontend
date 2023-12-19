@@ -22,6 +22,7 @@ function getLocale(request: NextRequest): string | undefined {
 
   let locale = matchLocale(languages, locales, defaultLocale);
 
+  // 优先使用cookie中设置的语言
   const cookieStore = cookies();
   const cookieLocale = cookieStore.get('locale')?.value;
   if (cookieLocale) {

@@ -1,17 +1,25 @@
 'use client';
 import { useState, useRef } from 'react';
-import { Input, InputRef } from 'antd';
+import { Input, InputRef, Switch, Modal, Form, Button } from 'antd';
 import fetcher from '@/lib/fetcher';
+import { EditOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import { TRoom } from '@/lib/types/global';
+
+type FieldType = {
+  password: string;
+};
 
 export default function RoomName({
-  name,
-  roomId,
+  roomInfo,
+  t,
 }: {
-  name?: string;
-  roomId: string;
+  roomInfo: TRoom;
+  t: Record<string, string>;
 }) {
-  const [roomName, setRoomName] = useState<string>(name || '');
+  const [roomName, setRoomName] = useState<string>(roomInfo.roomName || '');
   const [isEdit, setIsEdit] = useState(false);
+  const [isLock, setIsLock] = useState<boolean>(!!roomInfo?.password);
+  const [visible, setVisible] = useState(false);
 
   const inputInstance = useRef<InputRef>(null);
 
@@ -22,19 +30,62 @@ export default function RoomName({
     }, 0);
   };
 
+  async function updateRoom(params: Partial<TRoom>) {
+    await fetcher({
+      url: `/room/${roomInfo.id}`,
+      method: 'PUT',
+      params: params as Record<string, string>,
+    });
+  }
+
   const handleBlur = async () => {
     setIsEdit(false);
-    let resp = await fetcher({
-      url: `/room/${roomId}`,
-      method: 'PUT',
-      params: {
-        roomName,
-      },
-    });
+    await updateRoom({ roomName });
+  };
+
+  const handleChangeLock = async () => {
+    if (isLock) {
+      const resp = await updateRoom({ password: '' });
+      console.log(resp);
+      setIsLock((prev) => !prev);
+      setVisible(false);
+    } else {
+      setVisible(true);
+    }
+  };
+
+  const onFinish = async (value: FieldType) => {
+    const resp = await updateRoom(value);
+    console.log(resp);
+    setIsLock((prev) => !prev);
+    setVisible(false);
   };
 
   return (
-    <div className="flex-1 h-7" onClick={handleClickName}>
+    <div className="flex-1 h-7">
+      <Modal
+        title={t['set password']}
+        open={visible}
+        footer={null}
+        onCancel={() => setVisible(false)}
+      >
+        <Form
+          name="basic"
+          labelCol={{ span: 6 }}
+          className="w-96"
+          onFinish={onFinish}
+          autoComplete="off"
+        >
+          <Form.Item<FieldType> label={t['password']} name="password">
+            <Input.Password />
+          </Form.Item>
+          <Form.Item className="text-right">
+            <Button type="primary" htmlType="submit">
+              {t['save']}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
       {isEdit ? (
         <Input
           ref={inputInstance}
@@ -44,7 +95,18 @@ export default function RoomName({
           onBlur={handleBlur}
         />
       ) : (
-        <h1>{roomName}</h1>
+        <h1>
+          <span onClick={handleClickName}>
+            {roomName}
+            <EditOutlined className="mx-2 text-base cursor-pointer" />
+          </span>
+          <Switch
+            checkedChildren={<LockOutlined />}
+            unCheckedChildren={<UnlockOutlined />}
+            checked={isLock}
+            onChange={handleChangeLock}
+          />
+        </h1>
       )}
     </div>
   );

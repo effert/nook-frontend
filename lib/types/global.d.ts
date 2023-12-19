@@ -12,6 +12,7 @@ export type TUser = {
 export type TRoom = {
   id: string; // @id
   roomName: string;
+  password?: string;
   createdAt: DateTime; //@default(now())
   members: TUser[]; // 关联到 User 模型
   messages: TMessage[]; // 关联到 Message 模型

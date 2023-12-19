@@ -22,6 +22,12 @@
     "press 'Enter' to send": "按'Enter'发送",
     "create": "新建",
     "enter": "进入",
-    "anonymity": "匿名用户"
+    "anonymity": "匿名用户",
+    "enter room": "进入房间",
+    "room id": "房间ID",
+    "password": "密码",
+    "Please input roomId!": "请输入房间ID",
+    "set password": "设置密码",
+    "save": "保存"
   }
 }

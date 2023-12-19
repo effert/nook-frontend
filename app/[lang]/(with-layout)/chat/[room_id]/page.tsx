@@ -54,7 +54,7 @@ async function getRoomInfo(roomId: string) {
     },
   });
   let res = await resp.json();
-  return res.data.data;
+  return res?.data?.data;
 }
 
 async function getRoomMembers(roomId: string) {
@@ -82,11 +82,13 @@ const Page = async ({
   let members = await getRoomMembers(room_id);
 
   function mergeRoomList(roomList: TRoom[], roomInfo: TRoom) {
-    let index = findIndex(roomList, { id: roomInfo.id });
-    if (index < 0) {
-      roomList.push(roomInfo);
-    } else {
-      roomList[index] = roomInfo;
+    if (roomInfo) {
+      let index = findIndex(roomList, { id: roomInfo.id });
+      if (index < 0) {
+        roomList.push(roomInfo);
+      } else {
+        roomList[index] = roomInfo;
+      }
     }
     return roomList;
   }
@@ -115,7 +117,7 @@ const Page = async ({
       </div>
       <div className="flex-1 flex flex-col">
         <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
-          <RoomName name={roomInfo?.roomName} roomId={room_id} />
+          <RoomName t={t} roomInfo={roomInfo} />
           <div className="flex gap-2 items-center">
             <Button className="text-xs" size="small">
               {t['import']}
@@ -126,7 +128,7 @@ const Page = async ({
           </div>
         </div>
         <div className="flex flex-1">
-          <Room t={t} roomId={room_id} propMemebers={members} />
+          <Room t={t} roomId={room_id} propMembers={members} />
         </div>
       </div>
     </div>
