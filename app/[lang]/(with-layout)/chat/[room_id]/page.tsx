@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Locale } from '@/lib/utils/get-dictionary';
 import { getDictionary } from '@/lib/utils/get-dictionary';
-import { Button, Input } from 'antd';
 import Room from './room';
 import NewRoomBtn from './new-room-btn';
 import RoomName from './room-name';
+import MessageBtn from './message-btn';
 import { cookies } from 'next/headers';
 import { TOKEN } from '@/lib/constant/index';
 import { TRoom } from '@/lib/types/global';
@@ -118,14 +118,7 @@ const Page = async ({
       <div className="flex-1 flex flex-col">
         <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
           <RoomName t={t} roomInfo={roomInfo} />
-          <div className="flex gap-2 items-center">
-            <Button className="text-xs" size="small">
-              {t['import']}
-            </Button>
-            <Button className="text-xs" size="small" type="primary">
-              {t['export']}
-            </Button>
-          </div>
+          <MessageBtn t={t} roomInfo={roomInfo} />
         </div>
         <div className="flex flex-1">
           <Room t={t} roomId={room_id} propMembers={members} />
