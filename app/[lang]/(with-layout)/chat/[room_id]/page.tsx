@@ -141,7 +141,9 @@ const Page = async ({
           </div>
         </div>
       ) : (
-        '请进入房间'
+        <div className="flex-1 h-full flex justify-center items-center">
+          <h1 className="text-4xl">{t['welcome to NOOK']}</h1>
+        </div>
       )}
     </div>
   );

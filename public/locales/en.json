@@ -15,6 +15,7 @@
     "request failed, please try again later": "request failed, please try again later"
   },
   "chat": {
+    "welcome to NOOK": "Welcome to NOOK",
     "note": "Note",
     "import": "Import",
     "export": "Export",
