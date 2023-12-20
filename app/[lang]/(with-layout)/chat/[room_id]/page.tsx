@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 import { TOKEN } from '@/lib/constant/index';
 import { TRoom } from '@/lib/types/global';
 import { findIndex, get } from 'lodash';
+import { redirect } from 'next/navigation';
 
 async function fetchUserInfo() {
   const cookieStore = cookies();
@@ -46,15 +47,22 @@ async function getRoomList() {
   return [];
 }
 
-async function getRoomInfo(roomId: string) {
-  let resp = await fetch(`${process.env.BASE_URL}/room/${roomId}`, {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+async function getRoomInfo(roomId: string, password?: string) {
+  let resp = await fetch(
+    `${process.env.BASE_URL}/room/${roomId}?password=${decodeURIComponent(
+      password || ''
+    )}`,
+    {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
   let res = await resp.json();
-  return get(res, 'data.data', []);
+  return get(res, 'data.data', {}) as TRoom & {
+    isPasswordCorrect: boolean;
+  };
 }
 
 async function getRoomMembers(roomId: string) {
@@ -69,19 +77,26 @@ async function getRoomMembers(roomId: string) {
 }
 
 const Page = async ({
-  params: { room_id, lang },
+  params: { room_id, lang, password },
 }: {
-  params: { room_id: string; lang: Locale };
+  params: { lang: Locale; room_id?: string; password?: string };
 }) => {
   const D = await getDictionary(lang);
   const t = D.chat;
 
   let userInfo = await fetchUserInfo();
   let roomList = await getRoomList();
-  let roomInfo = await getRoomInfo(room_id);
-  let members = await getRoomMembers(room_id);
+  let roomInfo;
+  let members;
+  if (room_id) {
+    roomInfo = await getRoomInfo(room_id, password);
+    members = await getRoomMembers(room_id);
+  }
+  if (roomInfo?.password && !roomInfo.isPasswordCorrect) {
+    redirect('/');
+  }
 
-  function mergeRoomList(roomList: TRoom[], roomInfo: TRoom) {
+  function mergeRoomList(roomList: TRoom[], roomInfo?: TRoom) {
     if (roomInfo) {
       let index = findIndex(roomList, { id: roomInfo.id });
       if (index < 0) {
@@ -115,15 +130,19 @@ const Page = async ({
           </div>
         )}
       </div>
-      <div className="flex-1 flex flex-col">
-        <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
-          <RoomName t={t} roomInfo={roomInfo} />
-          <MessageBtn t={t} roomInfo={roomInfo} />
+      {roomInfo && room_id ? (
+        <div className="flex-1 flex flex-col">
+          <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
+            <RoomName t={t} roomInfo={roomInfo} />
+            <MessageBtn t={t} roomInfo={roomInfo} />
+          </div>
+          <div className="flex flex-1">
+            <Room t={t} roomId={room_id} propMembers={members} />
+          </div>
         </div>
-        <div className="flex flex-1">
-          <Room t={t} roomId={room_id} propMembers={members} />
-        </div>
-      </div>
+      ) : (
+        '请进入房间'
+      )}
     </div>
   );
 };

@@ -36,7 +36,9 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
         !resp.data.password ||
         (resp.data.password && resp.data.isPasswordCorrect)
       ) {
-        router.push(`/chat/${resp.data.id}`);
+        router.push(
+          `/chat/${resp.data.id}/${encodeURIComponent(resp.data.password)}`
+        );
       } else {
         message.error(t['The password is incorrect']);
       }
