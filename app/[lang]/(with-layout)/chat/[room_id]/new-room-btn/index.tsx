@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Button, Modal, Form, Input } from 'antd';
+import { Button, Modal, Form, Input, message } from 'antd';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 
@@ -31,9 +31,19 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
         password: values.password,
       },
     });
-    if (resp.data.id && resp.data.isPasswordCorrect) {
-      router.push(`/chat/${resp.data.id}`);
+    if (resp.data.id) {
+      if (
+        !resp.data.password ||
+        (resp.data.password && resp.data.isPasswordCorrect)
+      ) {
+        router.push(`/chat/${resp.data.id}`);
+      } else {
+        message.error(t['The password is incorrect']);
+      }
+    } else {
+      message.error(t['The room does not exist']);
     }
+    setVisible(false);
   };
 
   return (

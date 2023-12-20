@@ -1,13 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
 import { TOKEN } from '@/lib/constant/index';
 import classnames from 'classnames';
 import { findIndex } from 'lodash';
 
-type TMessageType = 'text' | 'image' | 'file' | 'member'; // member 表示成员变动
+type TMessageType = 'text' | 'image' | 'file' | 'member' | 'error'; // member 表示成员变动
 
 type TMessage = {
   type: TMessageType;
@@ -38,7 +38,9 @@ export default function Room({
       }`,
       (msg) => {
         const newMessage: TMessage = JSON.parse(msg);
-        if (newMessage.type === 'member') {
+        if (newMessage.type === 'error') {
+          message.error(newMessage.content);
+        } else if (newMessage.type === 'member') {
           handleMemberChange(newMessage);
         } else {
           setMessages((prevMessages) => [...prevMessages, newMessage]);

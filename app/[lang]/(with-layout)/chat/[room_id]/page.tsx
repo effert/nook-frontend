@@ -8,7 +8,7 @@ import RoomName from './room-name';
 import { cookies } from 'next/headers';
 import { TOKEN } from '@/lib/constant/index';
 import { TRoom } from '@/lib/types/global';
-import { findIndex } from 'lodash';
+import { findIndex, get } from 'lodash';
 
 async function fetchUserInfo() {
   const cookieStore = cookies();
@@ -23,7 +23,7 @@ async function fetchUserInfo() {
       },
     });
     let res = await resp.json();
-    return res.data.user;
+    return get(res, 'data.user', {});
   }
   return null;
 }
@@ -41,7 +41,7 @@ async function getRoomList() {
       },
     });
     let res = await resp.json();
-    return res.data.data;
+    return get(res, 'data.data', []);
   }
   return [];
 }
@@ -54,7 +54,7 @@ async function getRoomInfo(roomId: string) {
     },
   });
   let res = await resp.json();
-  return res?.data?.data;
+  return get(res, 'data.data', []);
 }
 
 async function getRoomMembers(roomId: string) {
@@ -65,7 +65,7 @@ async function getRoomMembers(roomId: string) {
     },
   });
   let res = await resp.json();
-  return res.data.data;
+  return get(res, 'data.data', []);
 }
 
 const Page = async ({

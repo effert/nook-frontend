@@ -28,6 +28,8 @@
     "password": "密码",
     "Please input roomId!": "请输入房间ID",
     "set password": "设置密码",
-    "save": "保存"
+    "save": "保存",
+    "The room does not exist": "房间不存在",
+    "The password is incorrect": "密码错误"
   }
 }
