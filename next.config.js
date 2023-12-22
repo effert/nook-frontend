@@ -10,6 +10,9 @@ const { parsed: env } = dotenv.config({
 
 const nextConfig = {
   env,
+  images: {
+    domains: ['localhost'],
+  },
 };
 
 module.exports = nextConfig;

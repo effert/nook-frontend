@@ -1,11 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Input, message } from 'antd';
+import { Input, message, Avatar, Tooltip } from 'antd';
 import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
 import { TOKEN } from '@/lib/constant/index';
 import classnames from 'classnames';
 import { findIndex } from 'lodash';
+import { UserOutlined } from '@ant-design/icons';
 
 type TMessageType = 'text' | 'image' | 'file' | 'member' | 'error'; // member 表示成员变动
 
@@ -84,10 +85,22 @@ export default function Room({
                 'text-right': ele.isSelf,
               })}
             >
-              <div className="text-base">
-                {ele.sender.name || t['anonymity']}:
+              <div className="text-sm">
+                <span className="mr-2">
+                  {new Date(ele.time).toLocaleString()}
+                </span>
+                <Tooltip title={ele.sender.name || t['anonymity']}>
+                  <Avatar
+                    size="large"
+                    crossOrigin="anonymous"
+                    src={`${process.env.BASE_URL}${ele.sender.avatar}`}
+                    icon={<UserOutlined />}
+                  />
+                </Tooltip>
               </div>
-              <div className="text-sm mt-1">{ele.content}</div>
+              <div className="text-sm mt-2 bg-slate-200 dark:bg-slate-600 px-4 py-2 inline-block rounded-lg">
+                {ele.content}
+              </div>
             </div>
           ))}
         </div>
@@ -105,9 +118,9 @@ export default function Room({
         <div className="text-base">{t['member']}</div>
         <div>
           {members.map((ele) => (
-            <div key={ele.id} className="py-2 text-sm text-ellipsis">
-              {ele.name}
-            </div>
+            <Tooltip key={ele.id} title={ele.name || t['anonymity']}>
+              <div className="py-2 text-sm text-ellipsis">{ele.name}</div>
+            </Tooltip>
           ))}
         </div>
       </div>

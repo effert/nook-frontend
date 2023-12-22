@@ -7,9 +7,10 @@ import RoomName from './room-name';
 import MessageBtn from './message-btn';
 import { cookies } from 'next/headers';
 import { TOKEN } from '@/lib/constant/index';
-import { TRoom } from '@/lib/types/global';
+import { TRoom, TUser } from '@/lib/types/global';
 import { findIndex, get } from 'lodash';
 import { redirect } from 'next/navigation';
+import UserInfo from './user-info';
 
 async function fetchUserInfo() {
   const cookieStore = cookies();
@@ -84,7 +85,7 @@ const Page = async ({
   const D = await getDictionary(lang);
   const t = D.chat;
 
-  let userInfo = await fetchUserInfo();
+  let userInfo: TUser | null = await fetchUserInfo();
   let roomList = await getRoomList();
   let roomInfo;
   let members;
@@ -125,7 +126,7 @@ const Page = async ({
         </div>
         {userInfo && (
           <div className="h-32 p-3">
-            <div className="p-2">{userInfo?.name}</div>
+            <UserInfo user={userInfo} t={t} />
             <div className="p-2">{t['note']}</div>
           </div>
         )}

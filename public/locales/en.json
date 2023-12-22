@@ -33,6 +33,8 @@
     "The room does not exist": "The room does not exist",
     "The password is incorrect": "The password is incorrect",
     "import successful": "import successful",
-    "import failed": "import failed"
+    "import failed": "import failed",
+    "You can only upload JPG/PNG/JPG file!": "You can only upload JPG/PNG/JPG file!",
+    "Image must smaller than 2MB!": "Image must smaller than 2MB!"
   }
 }
