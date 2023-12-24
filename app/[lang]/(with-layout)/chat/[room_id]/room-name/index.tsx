@@ -2,8 +2,14 @@
 import { useState, useRef } from 'react';
 import { Input, InputRef, Switch, Modal, Form, Button } from 'antd';
 import fetcher from '@/lib/fetcher';
-import { EditOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  LockOutlined,
+  UnlockOutlined,
+  MenuUnfoldOutlined,
+} from '@ant-design/icons';
 import { TRoom } from '@/lib/types/global';
+import emitter from '@/lib/event-emitter';
 
 type FieldType = {
   password: string;
@@ -61,6 +67,10 @@ export default function RoomName({
     setVisible(false);
   };
 
+  const handleOpenRoomList = () => {
+    emitter.emit('open-room-list');
+  };
+
   return (
     <div className="flex-1 h-7">
       <Modal
@@ -96,8 +106,12 @@ export default function RoomName({
         />
       ) : (
         <h1>
+          <MenuUnfoldOutlined
+            className="md:hidden mr-2"
+            onClick={handleOpenRoomList}
+          />
           <span onClick={handleClickName}>
-            {roomName}
+            <span className="truncate">{roomName}</span>
             <EditOutlined className="mx-2 text-base cursor-pointer" />
           </span>
           <Switch

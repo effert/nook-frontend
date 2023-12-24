@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Input, message, Avatar, Tooltip } from 'antd';
+import { Input, message, Avatar, Tooltip, Drawer } from 'antd';
 import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
 import { TOKEN } from '@/lib/constant/index';
@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import { findIndex } from 'lodash';
 import { UserOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import emitter from '@/lib/event-emitter';
 
 type TMessageType = 'text' | 'image' | 'file' | 'member' | 'error'; // member 表示成员变动
 
@@ -31,8 +32,18 @@ export default function Room({
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [members, setMembers] = useState<TUser[]>(propMembers);
   const [text, setText] = useState('');
+  const [open, setOpen] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    emitter.on('open-member', () => {
+      setOpen(true);
+    });
+    return () => {
+      emitter.off('open-member');
+    };
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem(TOKEN);
@@ -126,7 +137,7 @@ export default function Room({
           />
         </div>
       </div>
-      <div className="w-48 border-l border-l-slate-400 p-3">
+      <div className="w-48 border-l border-l-slate-400 p-3 hidden md:block">
         <div className="text-base">{t['member']}</div>
         <div>
           {members.map((ele) => (
@@ -136,6 +147,19 @@ export default function Room({
           ))}
         </div>
       </div>
+      <Drawer
+        title={t['member']}
+        placement="right"
+        open={open}
+        width={200}
+        onClose={() => setOpen(false)}
+      >
+        {members.map((ele) => (
+          <Tooltip key={ele.id} title={ele.name || t['anonymity']}>
+            <div className="py-2 text-sm text-ellipsis">{ele.name}</div>
+          </Tooltip>
+        ))}
+      </Drawer>
     </>
   );
 }

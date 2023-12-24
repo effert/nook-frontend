@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google';
 import type { Locale } from '@/lib/utils/get-dictionary';
 import Provider from '@/components/provider';
-import UseInitTheme from '@/lib/customHook/useInitTheme';
+import UseInitTheme from '@/lib/custom-hook/use-init-theme';
 
 const inter = Inter({ subsets: ['latin'] });
 

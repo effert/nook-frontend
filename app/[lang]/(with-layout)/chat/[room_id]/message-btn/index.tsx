@@ -2,6 +2,8 @@
 import { Button, Upload, UploadProps, message } from 'antd';
 import { TRoom } from '@/lib/types/global';
 import fetcher from '@/lib/fetcher';
+import { MenuFoldOutlined } from '@ant-design/icons';
+import emitter from '@/lib/event-emitter';
 
 export default function MessageBtn({
   t,
@@ -39,6 +41,10 @@ export default function MessageBtn({
     }
   };
 
+  const handleOpenMember = () => {
+    emitter.emit('open-member');
+  };
+
   return (
     <div className="flex gap-2 items-center">
       <Upload {...props}>
@@ -54,6 +60,7 @@ export default function MessageBtn({
       >
         {t['export']}
       </Button>
+      <MenuFoldOutlined className="md:hidden" onClick={handleOpenMember} />
     </div>
   );
 }

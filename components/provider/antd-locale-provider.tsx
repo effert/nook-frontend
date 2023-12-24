@@ -5,7 +5,7 @@ import { i18n, defaultLocale } from '@/lib/utils/get-dictionary';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import useSysStore from '@/lib/stores/system';
-import { isDark } from '@/lib/customHook/useInitTheme';
+import { isDark } from '@/lib/custom-hook/use-init-theme';
 
 export type ProviderProps = PropsWithChildren<{
   locale: Locale;

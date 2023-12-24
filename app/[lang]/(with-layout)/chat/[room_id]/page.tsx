@@ -11,6 +11,7 @@ import { TRoom, TUser } from '@/lib/types/global';
 import { findIndex, get } from 'lodash';
 import { redirect } from 'next/navigation';
 import UserInfo from './user-info';
+import RoomListWrap from './room-list-wrap';
 
 async function fetchUserInfo() {
   const cookieStore = cookies();
@@ -87,7 +88,11 @@ const Page = async ({
 
   let userInfo: TUser | null = await fetchUserInfo();
   let roomList = await getRoomList();
-  let roomInfo;
+  let roomInfo:
+    | (TRoom & {
+        isPasswordCorrect?: boolean;
+      })
+    | undefined;
   let members;
   if (room_id) {
     roomInfo = await getRoomInfo(room_id, password);
@@ -109,28 +114,35 @@ const Page = async ({
     return roomList;
   }
 
+  const roomListDom = (className: string) => (
+    <div
+      className={`w-60 md:border-r border-r-slate-400 flex-col h-full ${className}`}
+    >
+      <div className="overflow-y-auto flex-1 px-3 pt-4 border-b border-b-slate-400">
+        <NewRoomBtn t={t} />
+        {mergeRoomList(roomList, roomInfo).map((ele: TRoom) => (
+          <a
+            key={ele.id}
+            className="block px-2 py-1 my-2 cursor-pointer truncate hover:bg-gray-200 dark:hover:bg-slate-800"
+            href={`/chat/${ele.id}`}
+          >
+            {ele.roomName}
+          </a>
+        ))}
+      </div>
+      {userInfo && (
+        <div className="h-32 p-3">
+          <UserInfo user={userInfo} t={t} />
+          <div className="p-2">{t['note']}</div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="h-[calc(100vh-64px)] flex">
-      <div className="w-60 border-r border-r-slate-400 flex flex-col">
-        <div className="overflow-y-auto flex-1 px-3 pt-4 border-b border-b-slate-400">
-          <NewRoomBtn t={t} />
-          {mergeRoomList(roomList, roomInfo).map((ele: TRoom) => (
-            <a
-              key={ele.id}
-              className="block px-2 py-1 my-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-800"
-              href={`/chat/${ele.id}`}
-            >
-              {ele.roomName}
-            </a>
-          ))}
-        </div>
-        {userInfo && (
-          <div className="h-32 p-3">
-            <UserInfo user={userInfo} t={t} />
-            <div className="p-2">{t['note']}</div>
-          </div>
-        )}
-      </div>
+      {roomListDom('hidden md:flex')}
+      <RoomListWrap>{roomListDom('flex')}</RoomListWrap>
       {roomInfo && room_id ? (
         <div className="flex-1 flex flex-col">
           <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
