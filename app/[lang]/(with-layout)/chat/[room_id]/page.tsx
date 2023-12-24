@@ -137,7 +137,7 @@ const Page = async ({
             <RoomName t={t} roomInfo={roomInfo} />
             <MessageBtn t={t} roomInfo={roomInfo} />
           </div>
-          <div className="flex flex-1">
+          <div className="flex flex-1 h-[calc(100%-61px)]">
             <Room t={t} roomId={room_id} propMembers={members} />
           </div>
         </div>

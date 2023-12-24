@@ -7,6 +7,7 @@ import { TOKEN } from '@/lib/constant/index';
 import classnames from 'classnames';
 import { findIndex } from 'lodash';
 import { UserOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 
 type TMessageType = 'text' | 'image' | 'file' | 'member' | 'error'; // member 表示成员变动
 
@@ -31,6 +32,8 @@ export default function Room({
   const [members, setMembers] = useState<TUser[]>(propMembers);
   const [text, setText] = useState('');
 
+  const router = useRouter();
+
   useEffect(() => {
     const token = localStorage.getItem(TOKEN);
     WebSocketService.connect(
@@ -41,6 +44,7 @@ export default function Room({
         const newMessage: TMessage = JSON.parse(msg);
         if (newMessage.type === 'error') {
           message.error(newMessage.content);
+          router.push('/chat');
         } else if (newMessage.type === 'member') {
           handleMemberChange(newMessage);
         } else {
@@ -77,7 +81,7 @@ export default function Room({
   return (
     <>
       <div className="flex-1 flex flex-col">
-        <div className="flex-1 border-b border-b-slate-400 py-3 px-6">
+        <div className="flex-1 border-b border-b-slate-400 py-3 px-6 overflow-y-scroll">
           {messages.map((ele, index) => (
             <div
               key={index}
@@ -85,18 +89,26 @@ export default function Room({
                 'text-right': ele.isSelf,
               })}
             >
-              <div className="text-sm">
-                <span className="mr-2">
-                  {new Date(ele.time).toLocaleString()}
-                </span>
-                <Tooltip title={ele.sender.name || t['anonymity']}>
-                  <Avatar
-                    size="large"
-                    crossOrigin="anonymous"
-                    src={`${process.env.BASE_URL}${ele.sender.avatar}`}
-                    icon={<UserOutlined />}
-                  />
-                </Tooltip>
+              <div
+                className={classnames('flex', {
+                  'justify-end': ele.isSelf,
+                })}
+              >
+                <div
+                  className={classnames('text-sm flex items-center gap-2', {
+                    'flex-row-reverse': !ele.isSelf,
+                  })}
+                >
+                  <span>{new Date(ele.time).toLocaleString()}</span>
+                  <Tooltip title={ele.sender.name || t['anonymity']}>
+                    <Avatar
+                      size="large"
+                      crossOrigin="anonymous"
+                      src={`${process.env.BASE_URL}${ele.sender.avatar}`}
+                      icon={<UserOutlined />}
+                    />
+                  </Tooltip>
+                </div>
               </div>
               <div className="text-sm mt-2 bg-slate-200 dark:bg-slate-600 px-4 py-2 inline-block rounded-lg">
                 {ele.content}
