@@ -49,7 +49,7 @@ export default function LoginForm({
       localStorage.setItem(TOKEN, `bearer ${resp.token}`);
       localStorage.setItem(USER_INFO, JSON.stringify(resp.user));
       setUser(resp.user);
-      router.push(`/${lang}`);
+      router.push('/chat');
     }
   };
 

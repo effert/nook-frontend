@@ -110,7 +110,7 @@ export default function RoomName({
             className="md:hidden mr-2"
             onClick={handleOpenRoomList}
           />
-          <span onClick={handleClickName}>
+          <span className="hidden md:inline-block" onClick={handleClickName}>
             <span className="truncate">{roomName}</span>
             <EditOutlined className="mx-2 text-base cursor-pointer" />
           </span>
