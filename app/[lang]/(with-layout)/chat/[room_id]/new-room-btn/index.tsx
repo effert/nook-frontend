@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Form, Input, message } from 'antd';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
+import { get } from 'lodash';
 
 type FieldType = {
   roomId: string;
@@ -18,8 +19,9 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
       url: '/room/create',
       method: 'POST',
     });
-    if (resp.data.id) {
-      router.push(`/chat/${resp.data.id}`);
+    const roomInfo = get(resp, 'data', {});
+    if (roomInfo.id) {
+      router.push(`/chat/${roomInfo.id}`);
     }
   };
 
@@ -31,17 +33,18 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
         password: values.password,
       },
     });
-    if (resp.data.id) {
+    const roomInfo = get(resp, 'data', {});
+    if (roomInfo.id) {
       if (
-        !resp.data.password ||
-        (resp.data.password && resp.data.isPasswordCorrect)
+        !roomInfo.password ||
+        (roomInfo.password && roomInfo.isPasswordCorrect)
       ) {
-        if (resp.data.password) {
+        if (roomInfo.password) {
           router.push(
-            `/chat/${resp.data.id}/${encodeURIComponent(resp.data.password)}`
+            `/chat/${roomInfo.id}/${encodeURIComponent(roomInfo.password)}`
           );
         } else {
-          router.push(`/chat/${resp.data.id}`);
+          router.push(`/chat/${roomInfo.id}`);
         }
       } else {
         message.error(t['The password is incorrect']);
