@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { Button, Modal, Form, Input, message } from 'antd';
+import React, { useState, useRef } from 'react';
+import { Button, Modal, Form, Input, message, InputRef } from 'antd';
 import { useRouter } from 'next/navigation';
 import fetcher from '@/lib/fetcher';
 import { get } from 'lodash';
@@ -14,6 +14,8 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
 
+  const roomIdInstance = useRef<InputRef>(null);
+
   const handleCreateRoom = async () => {
     let resp = await fetcher({
       url: '/room/create',
@@ -23,6 +25,13 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
     if (roomInfo.id) {
       router.push(`/chat/${roomInfo.id}`);
     }
+  };
+
+  const handleEnterRoom = () => {
+    setVisible(true);
+    setTimeout(() => {
+      roomIdInstance.current?.focus();
+    }, 0);
   };
 
   const onFinish = async (values: any) => {
@@ -75,7 +84,7 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
             name="roomId"
             rules={[{ required: true, message: t['Please input roomId!'] }]}
           >
-            <Input />
+            <Input ref={roomIdInstance} />
           </Form.Item>
 
           <Form.Item<FieldType> label={t['password']} name="password">
@@ -91,11 +100,7 @@ export default function NewRoomBtn({ t }: { t: Record<string, string> }) {
       <Button className="flex-1" onClick={handleCreateRoom}>
         {t['create']}
       </Button>
-      <Button
-        className="flex-1"
-        type="primary"
-        onClick={() => setVisible(true)}
-      >
+      <Button className="flex-1" type="primary" onClick={handleEnterRoom}>
         {t['enter']}
       </Button>
     </div>
