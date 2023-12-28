@@ -34,8 +34,10 @@ export default function UseInitTheme() {
   useEffect(() => {
     if (isDark(theme)) {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.setProperty('color-scheme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.setProperty('color-scheme', 'light');
     }
   }, [theme]);
 
