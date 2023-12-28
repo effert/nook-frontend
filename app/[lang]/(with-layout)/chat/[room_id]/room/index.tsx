@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Input,
   message,
@@ -9,6 +9,7 @@ import {
   Upload,
   UploadProps,
   Popover,
+  InputRef,
 } from 'antd';
 import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
@@ -61,6 +62,13 @@ export default function Room({
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
+  const inputRef = useRef<
+    InputRef & {
+      resizableTextArea: {
+        textArea: HTMLTextAreaElement;
+      };
+    }
+  >(null);
 
   useEffect(() => {
     emitter.on('open-member', () => {
@@ -212,7 +220,22 @@ export default function Room({
   };
 
   const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
-    setText((prevText) => prevText + emojiData.emoji);
+    const selectionStart =
+      inputRef.current?.resizableTextArea.textArea.selectionStart;
+    const cursorPosition = selectionStart || 0;
+    const textBeforeCursor = text.slice(0, cursorPosition);
+    const textAfterCursor = text.slice(cursorPosition);
+    const newText = textBeforeCursor + emojiData.emoji + textAfterCursor;
+    setText(newText);
+
+    // Move the cursor after emoji
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.resizableTextArea.textArea.selectionStart =
+          inputRef.current.resizableTextArea.textArea.selectionEnd =
+            cursorPosition + emojiData.emoji.length;
+      }
+    }, 0);
   };
 
   return (
@@ -270,6 +293,7 @@ export default function Room({
           </div>
           <TextArea
             value={text}
+            ref={inputRef}
             className="h-[calc(100%-32px)] resize-none bg-transparent border-0"
             placeholder={t[`press 'Enter' to send`]}
             onChange={(e) => setText(e.target.value)}
