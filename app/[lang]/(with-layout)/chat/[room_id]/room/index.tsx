@@ -1,16 +1,42 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Input, message, Avatar, Tooltip, Drawer } from 'antd';
+import {
+  Input,
+  message,
+  Avatar,
+  Tooltip,
+  Drawer,
+  Upload,
+  UploadProps,
+  Popover,
+} from 'antd';
 import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
 import { TOKEN } from '@/lib/constant/index';
 import classnames from 'classnames';
 import { findIndex } from 'lodash';
-import { UserOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  SmileOutlined,
+  PictureOutlined,
+  FileOutlined,
+} from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import emitter from '@/lib/event-emitter';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { EmojiClickData } from 'emoji-picker-react';
+
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 type TMessageType = 'text' | 'image' | 'file' | 'member' | 'error'; // member 表示成员变动
+enum MessageType {
+  TEXT = 'text',
+  IMAGE = 'image',
+  FILE = 'file',
+  MEMBER = 'member',
+  ERROR = 'error',
+}
 
 type TMessage = {
   type: TMessageType;
@@ -85,8 +111,108 @@ export default function Room({
   }
 
   const handleSendMessage = () => {
-    WebSocketService.sendMessage(text);
+    WebSocketService.sendMessage(
+      JSON.stringify({
+        type: MessageType.TEXT,
+        content: text,
+      })
+    );
     setText('');
+  };
+
+  const imgProps: UploadProps = {
+    name: 'file',
+    accept: 'png,jpg,jpeg',
+    action: `${process.env.BASE_URL}/common/upload`,
+    method: 'POST',
+    showUploadList: false,
+    beforeUpload(file) {
+      const isJpgOrPng =
+        file.type === 'image/jpeg' ||
+        file.type === 'image/png' ||
+        file.type === 'image/jpg';
+      if (!isJpgOrPng) {
+        message.error(t['You can only upload JPG/PNG/JPG file!']);
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error(t['Image must smaller than 2MB!']);
+      }
+      return isJpgOrPng && isLt2M;
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        const { filePath } = info.file.response.data;
+        WebSocketService.sendMessage(
+          JSON.stringify({
+            type: MessageType.IMAGE,
+            content: filePath,
+          })
+        );
+      } else if (info.file.status === 'error') {
+        message.error(t['send failed']);
+      }
+    },
+  };
+  const fileProps: UploadProps = {
+    name: 'file',
+    action: `${process.env.BASE_URL}/common/upload`,
+    method: 'POST',
+    showUploadList: false,
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isLt2M) {
+        message.error(t['File must smaller than 10MB!']);
+      }
+      return isLt2M;
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        const { filePath } = info.file.response.data;
+        WebSocketService.sendMessage(
+          JSON.stringify({
+            type: MessageType.FILE,
+            content: filePath,
+          })
+        );
+      } else if (info.file.status === 'error') {
+        message.error(t['send failed']);
+      }
+    },
+  };
+
+  const renderMessage = (ele: TMessage) => {
+    switch (ele.type) {
+      case MessageType.TEXT:
+        return ele.content;
+      case MessageType.IMAGE:
+        return (
+          <a href={`${process.env.BASE_URL}${ele.content}`} target="_blank">
+            <Image
+              width={80}
+              height={80}
+              alt=""
+              src={`${process.env.BASE_URL}${ele.content}`}
+            />
+          </a>
+        );
+      case MessageType.FILE:
+        return (
+          <a href={`${process.env.BASE_URL}${ele.content}`} target="_blank">
+            <FileOutlined className="text-2xl" />
+          </a>
+        );
+    }
+  };
+
+  const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
+    setText((prevText) => prevText + emojiData.emoji);
   };
 
   return (
@@ -122,15 +248,29 @@ export default function Room({
                 </div>
               </div>
               <div className="text-sm mt-2 bg-slate-200 dark:bg-slate-600 px-4 py-2 inline-block rounded-lg">
-                {ele.content}
+                {renderMessage(ele)}
               </div>
             </div>
           ))}
         </div>
         <div className="h-32">
+          <div className="flex gap-2 p-2">
+            <Popover
+              trigger="click"
+              content={<EmojiPicker onEmojiClick={onEmojiClick} />}
+            >
+              <SmileOutlined className="cursor-pointer" />
+            </Popover>
+            <Upload {...imgProps}>
+              <PictureOutlined className="cursor-pointer" />
+            </Upload>
+            <Upload {...fileProps}>
+              <FileOutlined className="cursor-pointer" />
+            </Upload>
+          </div>
           <TextArea
             value={text}
-            className="h-full resize-none bg-transparent border-0"
+            className="h-[calc(100%-32px)] resize-none bg-transparent border-0"
             placeholder={t[`press 'Enter' to send`]}
             onChange={(e) => setText(e.target.value)}
             onPressEnter={handleSendMessage}
