@@ -11,8 +11,8 @@ interface LayoutProps {
 
 const Layout = ({ children, lang }: LayoutProps) => {
   return (
-    <div className="layout">
-      <div className="sticky top-0 z-50 w-full transition-colors duration-500 shadow-md bg-white dark:bg-black dark:text-white">
+    <div id="root_layout" className="layout hidden">
+      <div className="sticky top-0 z-50 w-full shadow-md bg-white dark:bg-black dark:text-white">
         <div className="max-w-8xl mx-auto">
           <div className="flex justify-between items-center py-4 lg:px-8 mx-4 lg:mx-0">
             <Link href="/chat">

@@ -16,7 +16,7 @@ export default function Layout({
     <html lang={lang}>
       <Provider lang={lang}>
         <body
-          className={`${inter.className} bg-gray-100 dark:bg-gray-800/90 dark:text-white transition-colors duration-500`}
+          className={`${inter.className} bg-gray-100 dark:bg-gray-800/90 dark:text-white`}
         >
           <UseInitTheme />
           {children}

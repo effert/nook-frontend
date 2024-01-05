@@ -29,6 +29,7 @@ export default function UseInitTheme() {
     const initTheme = localStorage.theme;
     setTheme(initTheme || 'light');
     setInit();
+    document.querySelector('#root_layout')?.classList.remove('hidden');
   }, [localStorage, setTheme, setInit]);
 
   useEffect(() => {
