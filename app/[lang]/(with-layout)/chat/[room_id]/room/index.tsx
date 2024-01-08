@@ -27,6 +27,7 @@ import emitter from '@/lib/event-emitter';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { EmojiClickData } from 'emoji-picker-react';
+import fetcher from '@/lib/fetcher';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -60,6 +61,7 @@ export default function Room({
   const [members, setMembers] = useState<TUser[]>(propMembers);
   const [text, setText] = useState('');
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const router = useRouter();
   const inputRef = useRef<
@@ -69,6 +71,7 @@ export default function Room({
       };
     }
   >(null);
+  const aiNameInstance = useRef<InputRef>(null);
 
   useEffect(() => {
     emitter.on('open-member', () => {
@@ -238,6 +241,34 @@ export default function Room({
     }, 0);
   };
 
+  const handleShowAiNameInput = () => {
+    setEditing(true);
+    setTimeout(() => {
+      if (aiNameInstance.current) {
+        aiNameInstance.current.focus();
+      }
+    }, 0);
+  };
+
+  const handleChangeAiName = async (name: string) => {
+    const resp = await fetcher({
+      url: `/room/${roomId}`,
+      method: 'PUT',
+      params: {
+        aiName: name,
+      },
+    });
+    if (resp.code === 200) {
+      setMembers((prevMembers) => {
+        const newMembers = [...prevMembers];
+        const index = findIndex(newMembers, { id: -1 });
+        newMembers[index].name = name;
+        return newMembers;
+      });
+    }
+    setEditing(false);
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-col">
@@ -294,7 +325,7 @@ export default function Room({
           <TextArea
             value={text}
             ref={inputRef}
-            className="h-[calc(100%-32px)] resize-none bg-transparent border-0"
+            className="h-[calc(100%-32px)] resize-none bg-transparent border-0 focus:shadow-none"
             placeholder={t[`press 'Enter' to send`]}
             onChange={(e) => setText(e.target.value)}
             onPressEnter={handleSendMessage}
@@ -304,11 +335,36 @@ export default function Room({
       <div className="w-48 border-l border-l-slate-400 p-3 hidden md:block">
         <div className="text-base">{t['member']}</div>
         <div>
-          {members.map((ele) => (
-            <Tooltip key={ele.id} title={ele.name || t['anonymity']}>
-              <div className="py-2 text-sm text-ellipsis">{ele.name}</div>
-            </Tooltip>
-          ))}
+          {members.map((ele) => {
+            if (ele.id === -1) {
+              if (editing) {
+                return (
+                  <Input
+                    ref={aiNameInstance}
+                    key={ele.id}
+                    defaultValue={ele.name}
+                    onBlur={(e) => {
+                      handleChangeAiName(e.target.value);
+                    }}
+                  />
+                );
+              }
+              return (
+                <div
+                  key={ele.id}
+                  className="py-2 text-sm text-ellipsis cursor-pointer"
+                  onClick={handleShowAiNameInput}
+                >
+                  {ele.name}
+                </div>
+              );
+            }
+            return (
+              <Tooltip key={ele.id} title={ele.name || t['anonymity']}>
+                <div className="py-2 text-sm text-ellipsis">{ele.name}</div>
+              </Tooltip>
+            );
+          })}
         </div>
       </div>
       <Drawer
@@ -318,11 +374,36 @@ export default function Room({
         width={200}
         onClose={() => setOpen(false)}
       >
-        {members.map((ele) => (
-          <Tooltip key={ele.id} title={ele.name || t['anonymity']}>
-            <div className="py-2 text-sm text-ellipsis">{ele.name}</div>
-          </Tooltip>
-        ))}
+        {members.map((ele) => {
+          if (ele.id === -1) {
+            if (editing) {
+              return (
+                <Input
+                  key={ele.id}
+                  defaultValue={ele.name}
+                  ref={aiNameInstance}
+                  onBlur={(e) => {
+                    handleChangeAiName(e.target.value);
+                  }}
+                />
+              );
+            }
+            return (
+              <div
+                key={ele.id}
+                className="py-2 text-sm text-ellipsis cursor-pointer"
+                onClick={handleShowAiNameInput}
+              >
+                {ele.name}
+              </div>
+            );
+          }
+          return (
+            <Tooltip key={ele.id} title={ele.name || t['anonymity']}>
+              <div className="py-2 text-sm text-ellipsis">{ele.name}</div>
+            </Tooltip>
+          );
+        })}
       </Drawer>
     </>
   );

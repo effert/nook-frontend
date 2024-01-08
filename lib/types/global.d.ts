@@ -13,6 +13,8 @@ export type TRoom = {
   id: string; // @id
   roomName: string;
   password?: string;
+  ai: boolean; // 房间是否包含ai
+  aiName: string; // ai 名称
   createdAt: DateTime; //@default(now())
   members: TUser[]; // 关联到 User 模型
   messages: TMessage[]; // 关联到 Message 模型

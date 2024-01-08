@@ -30,7 +30,7 @@ export default function MessageBtn({
 
   const handleExport = async () => {
     const resp = await fetcher({
-      url: `${process.env.BASE_URL}/message/export`,
+      url: '/message/export',
       method: 'POST',
       params: {
         roomId: roomInfo.id,

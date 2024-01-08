@@ -142,6 +142,18 @@ const Page = async ({
     </div>
   );
 
+  const propMembers = roomInfo?.ai
+    ? [
+        {
+          id: -1,
+          name: roomInfo.aiName || 'AI',
+          email: '',
+          avatar: '/imgs/gpt-logo.jpg',
+        },
+        ...members,
+      ]
+    : members;
+
   return (
     <div className="h-[calc(100vh-64px)] flex">
       {roomListDom('hidden md:flex', 'px-3 pt-4')}
@@ -156,7 +168,7 @@ const Page = async ({
             <MessageBtn t={t} roomInfo={roomInfo} />
           </div>
           <div className="flex flex-1 h-[calc(100%-61px)]">
-            <Room t={t} roomId={room_id} propMembers={members} />
+            <Room t={t} roomId={room_id} propMembers={propMembers} />
           </div>
         </div>
       ) : (
