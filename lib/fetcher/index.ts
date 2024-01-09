@@ -10,7 +10,7 @@ export interface FetcherOptions {
   headers?: Record<string, string>;
   credentials?: string;
   format?: (data: any) => any;
-  params?: Record<string, string>;
+  params?: Record<string, string | number | boolean>;
   silence?: boolean;
 }
 
@@ -42,7 +42,9 @@ const fetcher = async ({
   if (method === 'GET') {
     let connector = '?';
     if (url.includes('?')) connector = '&';
-    url = `${url}${connector}${new URLSearchParams(params).toString()}`;
+    url = `${url}${connector}${new URLSearchParams(
+      params as Record<string, string>
+    ).toString()}`;
   } else {
     options.body = JSON.stringify(params);
   }

@@ -37,6 +37,8 @@
     "You can only upload JPG/PNG/JPG file!": "You can only upload JPG/PNG/JPG file!",
     "Image must smaller than 2MB!": "Image must smaller than 2MB!",
     "File must smaller than 10MB!": "File must smaller than 10MB!",
-    "send failed": "send failed"
+    "send failed": "send failed",
+    "add ai": "Add AI",
+    "remove ai": "Remove AI"
   }
 }

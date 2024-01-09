@@ -37,6 +37,8 @@
     "You can only upload JPG/PNG/JPG file!": "只能上传JPG/PNG/JPG文件!",
     "Image must smaller than 2MB!": "图片必须小于2MB!",
     "File must smaller than 10MB!": "文件必须小于10MB!",
-    "send failed": "发送失败"
+    "send failed": "发送失败",
+    "add ai": "添加AI",
+    "remove ai": "删除AI"
   }
 }

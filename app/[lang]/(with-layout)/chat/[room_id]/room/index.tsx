@@ -10,6 +10,7 @@ import {
   UploadProps,
   Popover,
   InputRef,
+  Button,
 } from 'antd';
 import WebSocketService from '@/lib/websocket';
 import { TUser } from '@/lib/types/global';
@@ -28,20 +29,22 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { EmojiClickData } from 'emoji-picker-react';
 import fetcher from '@/lib/fetcher';
+import { TRoom } from '@/lib/types/global';
+import { useParams } from 'next/navigation';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
-type TMessageType = 'text' | 'image' | 'file' | 'member' | 'error'; // member 表示成员变动
 enum MessageType {
   TEXT = 'text',
   IMAGE = 'image',
   FILE = 'file',
   MEMBER = 'member',
   ERROR = 'error',
+  UPDATE = 'update',
 }
 
 type TMessage = {
-  type: TMessageType;
+  type: MessageType;
   content: string; // type 为 member 时,content 为成员变动的类型(join,leave)
   sender: TUser; // type 为 member 时, sender 为成员
   time: number;
@@ -51,14 +54,19 @@ const { TextArea } = Input;
 export default function Room({
   t,
   roomId,
+  roomInfo,
   propMembers = [],
 }: {
   t: Record<string, string>;
   roomId: string;
+  roomInfo: TRoom;
   propMembers?: TUser[];
 }) {
+  const params = useParams<{ room_id: string; password: string }>();
+
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [members, setMembers] = useState<TUser[]>(propMembers);
+  const [_roomInfo, setRoomInfo] = useState<TRoom>(roomInfo);
   const [text, setText] = useState('');
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -90,11 +98,13 @@ export default function Room({
       }`,
       (msg) => {
         const newMessage: TMessage = JSON.parse(msg);
-        if (newMessage.type === 'error') {
+        if (newMessage.type === MessageType.ERROR) {
           message.error(newMessage.content);
           router.push('/chat');
-        } else if (newMessage.type === 'member') {
+        } else if (newMessage.type === MessageType.MEMBER) {
           handleMemberChange(newMessage);
+        } else if (newMessage.type === MessageType.UPDATE) {
+          handleUpdateRoom();
         } else {
           setMessages((prevMessages) => [...prevMessages, newMessage]);
         }
@@ -104,6 +114,17 @@ export default function Room({
       WebSocketService.close();
     };
   }, []);
+
+  async function handleUpdateRoom() {
+    const resp = await fetcher({
+      url: `/room/${roomId}`,
+      method: 'GET',
+      params: {
+        password: decodeURIComponent(params?.password),
+      },
+    });
+    setRoomInfo(resp.data);
+  }
 
   function handleMemberChange(newMessage: TMessage) {
     if (newMessage.content === 'join') {
@@ -262,12 +283,39 @@ export default function Room({
       setMembers((prevMembers) => {
         const newMembers = [...prevMembers];
         const index = findIndex(newMembers, { id: -1 });
-        newMembers[index].name = name;
+        if (index > -1) {
+          newMembers[index].name = name;
+        }
         return newMembers;
       });
+      WebSocketService.sendMessage(
+        JSON.stringify({
+          type: MessageType.UPDATE,
+        })
+      );
     }
     setEditing(false);
   };
+
+  const handleToggleAi = async (flag: boolean) => {
+    const resp = await fetcher({
+      url: `/room/${roomId}`,
+      method: 'PUT',
+      params: {
+        ai: flag,
+      },
+    });
+    if (resp.code === 200) {
+      WebSocketService.sendMessage(
+        JSON.stringify({
+          type: MessageType.UPDATE,
+        })
+      );
+    }
+    setEditing(false);
+  };
+
+  const aiMember = _roomInfo?.ai ? [{ id: -1, name: _roomInfo?.aiName }] : [];
 
   return (
     <>
@@ -333,9 +381,14 @@ export default function Room({
         </div>
       </div>
       <div className="w-48 border-l border-l-slate-400 p-3 hidden md:block">
-        <div className="text-base">{t['member']}</div>
+        <div className="text-base flex justify-between items-center">
+          <div>{t['member']}</div>
+          <Button type="link" onClick={() => handleToggleAi(!_roomInfo?.ai)}>
+            {_roomInfo?.ai ? t['remove ai'] : t['add ai']}
+          </Button>
+        </div>
         <div>
-          {members.map((ele) => {
+          {[...aiMember, ...members].map((ele) => {
             if (ele.id === -1) {
               if (editing) {
                 return (
@@ -374,7 +427,7 @@ export default function Room({
         width={200}
         onClose={() => setOpen(false)}
       >
-        {members.map((ele) => {
+        {[...aiMember, ...members].map((ele) => {
           if (ele.id === -1) {
             if (editing) {
               return (
