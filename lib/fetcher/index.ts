@@ -70,6 +70,7 @@ const fetcher = async ({
           t['request failed, please try again later']
       );
     }
+    return data?.data;
   } catch (error) {
     message.error(t['request failed, please try again later']);
     console.error('请求错误:', error);

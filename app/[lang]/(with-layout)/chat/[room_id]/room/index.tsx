@@ -279,7 +279,7 @@ export default function Room({
         aiName: name,
       },
     });
-    if (resp.code === 200) {
+    if (resp?.code === 200) {
       setMembers((prevMembers) => {
         const newMembers = [...prevMembers];
         const index = findIndex(newMembers, { id: -1 });
@@ -288,6 +288,7 @@ export default function Room({
         }
         return newMembers;
       });
+      setRoomInfo(resp.data);
       WebSocketService.sendMessage(
         JSON.stringify({
           type: MessageType.UPDATE,
@@ -299,20 +300,20 @@ export default function Room({
 
   const handleToggleAi = async (flag: boolean) => {
     const resp = await fetcher({
-      url: `/room/${roomId}`,
+      url: `/room/${roomId}/ai`,
       method: 'PUT',
       params: {
         ai: flag,
       },
     });
-    if (resp.code === 200) {
+    if (resp?.code === 200) {
+      setRoomInfo(resp.data);
       WebSocketService.sendMessage(
         JSON.stringify({
           type: MessageType.UPDATE,
         })
       );
     }
-    setEditing(false);
   };
 
   const aiMember = _roomInfo?.ai ? [{ id: -1, name: _roomInfo?.aiName }] : [];
