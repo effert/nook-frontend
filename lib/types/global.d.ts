@@ -13,6 +13,7 @@ export type TRoom = {
   id: string; // @id
   roomName: string;
   password?: string;
+  aiEnabled: boolean; // 房间是否具有开通ai的权限
   ai: boolean; // 房间是否包含ai
   aiName: string; // ai 名称
   createdAt: DateTime; //@default(now())

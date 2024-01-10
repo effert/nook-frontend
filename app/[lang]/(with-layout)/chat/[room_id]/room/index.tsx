@@ -316,7 +316,10 @@ export default function Room({
     }
   };
 
-  const aiMember = _roomInfo?.ai ? [{ id: -1, name: _roomInfo.aiName }] : [];
+  const aiMember =
+    _roomInfo?.ai && _roomInfo?.aiEnabled
+      ? [{ id: -1, name: _roomInfo.aiName }]
+      : [];
 
   return (
     <>
