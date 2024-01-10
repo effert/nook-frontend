@@ -316,7 +316,7 @@ export default function Room({
     }
   };
 
-  const aiMember = _roomInfo?.ai ? [{ id: -1, name: _roomInfo?.aiName }] : [];
+  const aiMember = _roomInfo?.ai ? [{ id: -1, name: _roomInfo.aiName }] : [];
 
   return (
     <>
@@ -397,6 +397,9 @@ export default function Room({
                     ref={aiNameInstance}
                     key={ele.id}
                     defaultValue={ele.name}
+                    onPressEnter={(e) => {
+                      handleChangeAiName((e.target as HTMLInputElement).value);
+                    }}
                     onBlur={(e) => {
                       handleChangeAiName(e.target.value);
                     }}
