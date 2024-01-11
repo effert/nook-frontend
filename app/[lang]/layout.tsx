@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import type { Locale } from '@/lib/utils/get-dictionary';
 import Provider from '@/components/provider';
 import UseInitTheme from '@/lib/custom-hook/use-init-theme';
@@ -20,6 +21,7 @@ export default function Layout({
         >
           <UseInitTheme />
           {children}
+          <Analytics />
         </body>
       </Provider>
     </html>
