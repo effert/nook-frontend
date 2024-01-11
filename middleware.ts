@@ -57,7 +57,7 @@ export default function middleware(request: NextRequest) {
     const locale = getLocale(request);
 
     // e.g. incoming request is /products
-    // The new URL is now /en/products
+    // The new URL is now /en-us/products
     return NextResponse.redirect(
       new URL(
         `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,

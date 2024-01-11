@@ -27,7 +27,7 @@ export default function SwitchLang({ lang }: { lang: Locale }) {
           'absolute flex justify-center items-center rounded-sm',
           {
             'left-0 top-0 z-1 text-xs w-4 h-4 bg-black text-white dark:bg-white dark:text-black':
-              lang === 'en',
+              lang === 'en-us',
             'right-0 bottom-0 z-0 text-xs w-4 h-4 scale-75 border border-black dark:border-white dark:text-white':
               lang === 'zh-cn',
           }
@@ -42,7 +42,7 @@ export default function SwitchLang({ lang }: { lang: Locale }) {
             'left-0 top-0 z-1 text-xs w-4 h-4 bg-black text-white dark:bg-white dark:text-black':
               lang === 'zh-cn',
             'right-0 bottom-0 z-0 text-xs w-4 h-4 scale-75 border border-black dark:border-white dark:text-white':
-              lang === 'en',
+              lang === 'en-us',
           }
         )}
       >
