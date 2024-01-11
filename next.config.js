@@ -10,7 +10,7 @@ const { parsed: env } = dotenv.config({
 const { parsed: allEnv } = dotenv.config();
 
 const nextConfig = {
-  env: Object.assign(env, allEnv || {}),
+  env: Object.assign(env || {}, allEnv || {}),
   images: {
     domains: ['localhost'],
   },
