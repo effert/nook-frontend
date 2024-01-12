@@ -19,7 +19,7 @@ async function fetchUserInfo() {
   const authorization = cookieStore.get(TOKEN);
   if (authorization) {
     const token = authorization.value;
-    let resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-info`, {
+    let resp = await fetch(`${process.env.BASE_URL}/user-info`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ async function getRoomList() {
   const authorization = cookieStore.get(TOKEN);
   if (authorization) {
     const token = authorization.value;
-    let resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/rooms`, {
+    let resp = await fetch(`${process.env.BASE_URL}/user/rooms`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -52,9 +52,9 @@ async function getRoomList() {
 
 async function getRoomInfo(roomId: string, password?: string) {
   let resp = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_BASE_URL
-    }/room/${roomId}?password=${decodeURIComponent(password || '')}`,
+    `${process.env.BASE_URL}/room/${roomId}?password=${decodeURIComponent(
+      password || ''
+    )}`,
     {
       method: 'get',
       headers: {
@@ -69,15 +69,12 @@ async function getRoomInfo(roomId: string, password?: string) {
 }
 
 async function getRoomMembers(roomId: string) {
-  let resp = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/room/${roomId}/users`,
-    {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  let resp = await fetch(`${process.env.BASE_URL}/room/${roomId}/users`, {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   let res = await resp.json();
   return get(res, 'data.data', []);
 }

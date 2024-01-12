@@ -14,7 +14,7 @@ export default function MessageBtn({
 }) {
   const props: UploadProps = {
     name: 'file',
-    action: `${process.env.NEXT_PUBLIC_BASE_URL}/message/import?roomId=${roomInfo.id}`,
+    action: `${process.env.BASE_URL}/message/import?roomId=${roomInfo.id}`,
     showUploadList: false,
     onChange(info) {
       if (info.file.status !== 'uploading') {

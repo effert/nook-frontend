@@ -14,7 +14,7 @@ export default function SwitchLang({ lang }: { lang: Locale }) {
   }, []);
 
   const handleChangeLang = () => {
-    const newLang = lang === 'zh-cn' ? 'en' : 'zh-cn';
+    const newLang = lang === 'zh-cn' ? 'en-us' : 'zh-cn';
     Cookies.set('locale', newLang);
     const newPathname = pathname.replace(lang, newLang);
     router.push(newPathname);
