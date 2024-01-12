@@ -28,6 +28,7 @@ export default function LoginForm({
   const router = useRouter();
 
   useEffect(() => {
+    console.log('login-form');
     if (emailRegex.test(account)) {
       setVisible(true);
     } else {
