@@ -19,7 +19,7 @@ export const localeList = Object.keys(i18n) as Locale[];
 
 const dictionaries = {
   'en-us': () =>
-    import('@/public/locales/en.json').then((module) => module.default),
+    import('@/public/locales/en-us.json').then((module) => module.default),
   'zh-cn': () =>
     import('@/public/locales/zh-cn.json').then((module) => module.default),
 };
