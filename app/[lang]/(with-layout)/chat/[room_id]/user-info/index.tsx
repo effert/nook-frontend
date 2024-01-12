@@ -19,7 +19,7 @@ export default function UserInfo({
   const props: UploadProps = {
     name: 'file',
     accept: 'png,jpg,jpeg',
-    action: `${process.env.BASE_URL}/user/avatar`,
+    action: `${process.env.NEXT_PUBLIC_BASE_URL}/user/avatar`,
     method: 'POST',
     withCredentials: true,
     showUploadList: false,
@@ -62,7 +62,7 @@ export default function UserInfo({
         <Avatar
           size="large"
           crossOrigin="anonymous"
-          src={`${process.env.BASE_URL}${avatar}`}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}${avatar}`}
           icon={<UserOutlined />}
         />
       </Upload>

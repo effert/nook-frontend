@@ -93,7 +93,7 @@ export default function Room({
   useEffect(() => {
     const token = localStorage.getItem(TOKEN);
     WebSocketService.connect(
-      `${process.env.WEBSOCKET_URL}/${roomId}?authorization=${
+      `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${roomId}?authorization=${
         token || 'anonymous'
       }`,
       (msg) => {
@@ -155,7 +155,7 @@ export default function Room({
   const imgProps: UploadProps = {
     name: 'file',
     accept: 'png,jpg,jpeg',
-    action: `${process.env.BASE_URL}/common/upload`,
+    action: `${process.env.NEXT_PUBLIC_BASE_URL}/common/upload`,
     method: 'POST',
     showUploadList: false,
     beforeUpload(file) {
@@ -191,7 +191,7 @@ export default function Room({
   };
   const fileProps: UploadProps = {
     name: 'file',
-    action: `${process.env.BASE_URL}/common/upload`,
+    action: `${process.env.NEXT_PUBLIC_BASE_URL}/common/upload`,
     method: 'POST',
     showUploadList: false,
     beforeUpload(file) {
@@ -225,18 +225,24 @@ export default function Room({
         return ele.content;
       case MessageType.IMAGE:
         return (
-          <a href={`${process.env.BASE_URL}${ele.content}`} target="_blank">
+          <a
+            href={`${process.env.NEXT_PUBLIC_BASE_URL}${ele.content}`}
+            target="_blank"
+          >
             <Image
               width={80}
               height={80}
               alt=""
-              src={`${process.env.BASE_URL}${ele.content}`}
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}${ele.content}`}
             />
           </a>
         );
       case MessageType.FILE:
         return (
-          <a href={`${process.env.BASE_URL}${ele.content}`} target="_blank">
+          <a
+            href={`${process.env.NEXT_PUBLIC_BASE_URL}${ele.content}`}
+            target="_blank"
+          >
             <FileOutlined className="text-2xl" />
           </a>
         );
@@ -347,7 +353,7 @@ export default function Room({
                     <Avatar
                       size="large"
                       crossOrigin="anonymous"
-                      src={`${process.env.BASE_URL}${ele.sender.avatar}`}
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL}${ele.sender.avatar}`}
                       icon={<UserOutlined />}
                     />
                   </Tooltip>

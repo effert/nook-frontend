@@ -16,7 +16,7 @@ export interface FetcherOptions {
 
 function prefixHost(url: string) {
   if (url.startsWith('/')) {
-    return `${process.env.BASE_URL}${url}`;
+    return `${process.env.NEXT_PUBLIC_BASE_URL}${url}`;
   }
   return url;
 }
