@@ -28,7 +28,7 @@ export default function LoginForm({
   const router = useRouter();
 
   useEffect(() => {
-    console.log('login-form');
+    console.log('NEXT_PUBLIC_BASE_URL111', process.env.NEXT_PUBLIC_BASE_URL);
     if (emailRegex.test(account)) {
       setVisible(true);
     } else {
@@ -67,6 +67,7 @@ export default function LoginForm({
     }
   };
 
+  console.log('NEXT_PUBLIC_BASE_URL', process.env.NEXT_PUBLIC_BASE_URL);
   return (
     <form className="text-gray-700 dark:text-white">
       <div>
