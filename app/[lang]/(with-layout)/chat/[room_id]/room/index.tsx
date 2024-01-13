@@ -388,7 +388,9 @@ export default function Room({
         <div className="text-base flex justify-between items-center">
           <div>{t['member']}</div>
           <Button type="link" onClick={() => handleToggleAi(!_roomInfo?.ai)}>
-            {_roomInfo?.ai ? t['remove ai'] : t['add ai']}
+            {_roomInfo?.ai && _roomInfo.aiEnabled
+              ? t['remove ai']
+              : t['add ai']}
           </Button>
         </div>
         <div>
