@@ -40,5 +40,27 @@
     "send failed": "发送失败",
     "add ai": "添加AI",
     "remove ai": "删除AI"
+  },
+  "server": {
+    "Message imported": "消息已导入",
+    "Invalid file upload": "无效的文件上传",
+    "Message deleted": "消息已删除",
+    "Please provide both email and password": "请同时提供邮箱和密码",
+    "Login successful": "登录成功",
+    "Temporary password expired": "临时密码过期",
+    "Invalid password": "无效的密码",
+    "Internal server error": "服务器内部错误",
+    "Please provide email": "请提供邮箱",
+    "User not found": "未找到用户",
+    "Temporary password generated": "生成临时密码",
+    "Access denied": "拒绝访问",
+    "Authentication required": "认证要求",
+    "Room not found": "未找到房间",
+    "Your Temporary Password": "您的临时密码",
+    "Your temporary password is": "您的临时密码是",
+    "It will expire in 15 minutes": "它将在15分钟内过期",
+    "File size cannot exceed 2MB": "文件大小不能超过2MB",
+    "Only images are allowed": "只允许图片",
+    "AI is not enabled": "AI未启用"
   }
 }

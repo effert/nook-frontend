@@ -40,5 +40,27 @@
     "send failed": "send failed",
     "add ai": "Add AI",
     "remove ai": "Remove AI"
+  },
+  "server": {
+    "Message imported": "Message imported",
+    "Invalid file upload": "Invalid file upload",
+    "Message deleted": "Message deleted",
+    "Please provide both email and password": "Please provide both email and password",
+    "Login successful": "Login successful",
+    "Temporary password expired": "Temporary password expired",
+    "Invalid password": "Invalid password",
+    "Internal server error": "Internal server error",
+    "Please provide email": "Please provide email",
+    "User not found": "User not found",
+    "Temporary password generated": "Temporary password generated",
+    "Access denied": "Access denied",
+    "Authentication required": "Authentication required",
+    "Room not found": "Room not found",
+    "Your Temporary Password": "Your Temporary Password",
+    "Your temporary password is": "Your temporary password is",
+    "It will expire in 15 minutes": "It will expire in 15 minutes",
+    "File size cannot exceed 2MB": "File size cannot exceed 2MB",
+    "Only images are allowed": "Only images are allowed",
+    "AI is not enabled": "AI is not enabled"
   }
 }
