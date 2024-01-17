@@ -7,18 +7,23 @@ const { SECRET_KEY = '' } = process.env;
 export default function withAuth(
   handler: (
     req: NextRequest,
-    res: NextResponse,
+    context: { params: Record<string, string> },
     t: Record<string, string>,
     user?: JwtPayload
   ) => Promise<NextResponse>
 ) {
-  return (req: NextRequest, res: NextResponse, t: Record<string, string>) => {
+  return (
+    req: NextRequest,
+    context: { params: Record<string, string> },
+    t: Record<string, string>,
+    user?: JwtPayload
+  ) => {
     const authHeader = req.headers.get(TOKEN) ?? '';
     if (authHeader) {
       const token = authHeader.split(' ')[1];
       try {
         const user = jwt.verify(token, SECRET_KEY) as JwtPayload;
-        return handler(req, res, t, user);
+        return handler(req, context, t, user);
       } catch (error) {
         return NextResponse.json(
           {

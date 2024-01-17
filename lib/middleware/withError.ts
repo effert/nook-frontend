@@ -17,9 +17,20 @@ export default function withLocale(
     t: Record<string, string>,
     user?: JwtPayload
   ) => {
-    const localeObj = cookies().get('locale');
-    const locale = (localeObj?.value || 'en-us') as Locale;
-    const dictionary = await getDictionary(locale);
-    return handler(req, context, dictionary['server'], user);
+    try {
+      console.log(111);
+      await handler(req, context, t, user);
+    } catch (err) {
+      console.error(err);
+      return NextResponse.json(
+        {
+          message: 111,
+          success: false,
+        },
+        {
+          status: 500,
+        }
+      );
+    }
   };
 }

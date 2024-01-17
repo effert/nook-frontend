@@ -8,7 +8,7 @@ const { SECRET_KEY = '' } = process.env;
 
 async function postHandler(
   req: NextRequest,
-  res: NextResponse,
+  context: { params: Record<string, string> },
   t: Record<string, string>
 ) {
   const { email, password } = await req.json();

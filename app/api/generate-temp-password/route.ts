@@ -14,7 +14,7 @@ const { EMAIL_HOST_USER, EMAIL_HOST_PASSWORD } = process.env;
  */
 async function handler(
   req: NextRequest,
-  res: NextResponse,
+  context: { params: Record<string, string> },
   t: Record<string, string>
 ) {
   const searchParams = req.nextUrl.searchParams;

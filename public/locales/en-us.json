@@ -61,6 +61,8 @@
     "It will expire in 15 minutes": "It will expire in 15 minutes",
     "File size cannot exceed 2MB": "File size cannot exceed 2MB",
     "Only images are allowed": "Only images are allowed",
-    "AI is not enabled": "AI is not enabled"
+    "AI is not enabled": "AI is not enabled",
+    "Please provide a file": "Please provide a file",
+    "Import failed": "Import failed"
   }
 }

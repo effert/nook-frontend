@@ -61,6 +61,8 @@
     "It will expire in 15 minutes": "它将在15分钟内过期",
     "File size cannot exceed 2MB": "文件大小不能超过2MB",
     "Only images are allowed": "只允许图片",
-    "AI is not enabled": "AI未启用"
+    "AI is not enabled": "AI未启用",
+    "Please provide a file": "请提供一个文件",
+    "Import failed": "导入失败"
   }
 }
