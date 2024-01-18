@@ -11,6 +11,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL")
+// }
+
 model User {
   id                 Int       @id @default(autoincrement())
   email              String    @unique // 用户账号，可以不是email
