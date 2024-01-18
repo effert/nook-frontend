@@ -28,7 +28,9 @@ async function handler(
 
   return NextResponse.json(
     {
-      data: room,
+      data: {
+        data: room,
+      },
       success: true,
     },
     {

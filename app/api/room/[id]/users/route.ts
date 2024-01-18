@@ -22,12 +22,14 @@ async function handler(
 
   return NextResponse.json(
     {
-      data: members?.map((member) => ({
-        id: member.id,
-        email: member.email,
-        name: member.name,
-        avatar: member.avatar,
-      })),
+      data: {
+        data: members?.map((member) => ({
+          id: member.id,
+          email: member.email,
+          name: member.name,
+          avatar: member.avatar,
+        })),
+      },
       success: true,
     },
     {

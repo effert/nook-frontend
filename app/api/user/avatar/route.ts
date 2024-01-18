@@ -34,11 +34,6 @@ async function handler(
       },
       {
         status: 400,
-        // headers: {
-        //   'Access-Control-Allow-Origin': '*',
-        //   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        //   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        // },
       }
     );
   }
@@ -54,14 +49,14 @@ async function handler(
   const _user = await UserModal.updateUser(user?.email, { avatar: _filePath });
 
   return NextResponse.json(
-    { success: true, filePath: _filePath },
+    {
+      success: true,
+      data: {
+        filePath: _filePath,
+      },
+    },
     {
       status: 200,
-      // headers: {
-      //   'Access-Control-Allow-Origin': '*',
-      //   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      //   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      // },
     }
   );
 }

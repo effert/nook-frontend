@@ -50,7 +50,9 @@ async function handler(
 
   return NextResponse.json(
     {
-      data: updatedRoom,
+      data: {
+        data: updatedRoom,
+      },
       success: true,
     },
     {

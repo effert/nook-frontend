@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { JwtPayload } from 'jsonwebtoken';
-import { cookies } from 'next/headers';
-import { getDictionary, Locale } from '@/lib/utils/get-dictionary';
 
-export default function withLocale(
+export default function withError(
   handler: (
     req: NextRequest,
     context: { params: Record<string, string> },
@@ -18,17 +16,21 @@ export default function withLocale(
     user?: JwtPayload
   ) => {
     try {
-      console.log(111);
-      await handler(req, context, t, user);
+      console.log(t);
+      return handler(req, context, t, user);
     } catch (err) {
-      console.error(err);
       return NextResponse.json(
         {
-          message: 111,
+          message: 'Internal server error',
           success: false,
         },
         {
           status: 500,
+          // headers: {
+          //   'Access-Control-Allow-Origin': '*',
+          //   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          //   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          // },
         }
       );
     }

@@ -53,7 +53,7 @@ async function getHandler(
   return NextResponse.json(
     {
       success: true,
-      data,
+      data: { data },
     },
     {
       status: 200,
@@ -98,7 +98,9 @@ async function putHandler(
   return NextResponse.json(
     {
       success: true,
-      data: updatedRoom,
+      data: {
+        data: updatedRoom,
+      },
     },
     {
       status: 200,

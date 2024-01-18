@@ -23,7 +23,9 @@ async function getHandler(
 
   return NextResponse.json(
     {
-      data: room?.ai,
+      data: {
+        data: room?.ai,
+      },
       success: true,
     },
     {
@@ -78,7 +80,9 @@ async function putHandler(
 
   return NextResponse.json(
     {
-      data: updatedRoom,
+      data: {
+        data: updatedRoom,
+      },
       success: true,
     },
     {

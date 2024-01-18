@@ -12,7 +12,7 @@ export default function withAuth(
     user?: JwtPayload
   ) => Promise<NextResponse>
 ) {
-  return (
+  return async (
     req: NextRequest,
     context: { params: Record<string, string> },
     t: Record<string, string>,

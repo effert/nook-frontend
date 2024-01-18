@@ -26,6 +26,6 @@ export const THEME_MAP = {
   system: 'icon-nookcomputer',
 };
 
-export const TOKEN = 'authorization';
+export const TOKEN = 'Authorization';
 
 export const USER_INFO = 'user_info';

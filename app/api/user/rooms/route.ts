@@ -10,7 +10,6 @@ async function getHandler(
   t: Record<string, string>,
   user?: JwtPayload
 ): Promise<NextResponse> {
-  console.log(user);
   if (!user) {
     return NextResponse.json(
       {
