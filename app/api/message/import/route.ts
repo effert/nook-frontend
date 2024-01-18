@@ -51,4 +51,4 @@ async function handler(
   );
 }
 
-export const POST = withError(withLocale(handler));
+export const POST = withLocale(withAuth(withError(handler)));

@@ -20,6 +20,6 @@ export default function withLocale(
     const localeObj = cookies().get('locale');
     const locale = (localeObj?.value || 'en-us') as Locale;
     const dictionary = await getDictionary(locale);
-    return handler(req, context, dictionary['server'], user);
+    return await handler(req, context, dictionary['server'], user);
   };
 }

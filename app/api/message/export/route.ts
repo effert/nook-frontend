@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import withLocale from '@/lib/middleware/withLocale';
 import withAuth from '@/lib/middleware/withAuth';
+import withError from '@/lib/middleware/withError';
 import { JwtPayload } from 'jsonwebtoken';
 import MessageModal from '@/app/api/modal/messageModal';
 
@@ -35,4 +36,4 @@ async function handler(
   );
 }
 
-export const POST = withAuth(withLocale(handler));
+export const POST = withLocale(withAuth(withError(handler)));

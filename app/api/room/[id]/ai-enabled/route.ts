@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import withLocale from '@/lib/middleware/withLocale';
 import withAuth from '@/lib/middleware/withAuth';
+import withError from '@/lib/middleware/withError';
 import { JwtPayload } from 'jsonwebtoken';
 import RoomModal from '@/app/api/modal/roomModal';
 
@@ -61,4 +62,4 @@ async function handler(
   );
 }
 
-export const PUT = withAuth(withLocale(handler));
+export const PUT = withLocale(withAuth(withError(handler)));

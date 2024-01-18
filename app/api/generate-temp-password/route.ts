@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import withLocale from '@/lib/middleware/withLocale';
+import withError from '@/lib/middleware/withError';
 import UserModal from '@/app/api/modal/userModal';
 import { generateRandomString } from '@/lib/utils';
 
@@ -97,4 +98,4 @@ async function sendTemporaryPassword(
   return await transporter.sendMail(mailOptions);
 }
 
-export const GET = withLocale(handler);
+export const GET = withLocale(withError(handler));

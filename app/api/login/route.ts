@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModal from '@/app/api/modal/userModal';
 import withLocale from '@/lib/middleware/withLocale';
+import withError from '@/lib/middleware/withError';
 
 const { SECRET_KEY = '' } = process.env;
 
@@ -146,4 +147,4 @@ async function postHandler(
   }
 }
 
-export const POST = withLocale(postHandler);
+export const POST = withLocale(withError(postHandler));

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import withLocale from '@/lib/middleware/withLocale';
-import withAuth from '@/lib/middleware/withAuth';
+import withError from '@/lib/middleware/withError';
 import { JwtPayload } from 'jsonwebtoken';
 import MessageModal from '@/app/api/modal/messageModal';
 
@@ -24,4 +24,4 @@ async function handler(
   );
 }
 
-export const DELETE = withLocale(handler);
+export const DELETE = withLocale(withError(handler));

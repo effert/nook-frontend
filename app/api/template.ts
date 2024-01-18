@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import withLocale from '@/lib/middleware/withLocale';
 import withAuth from '@/lib/middleware/withAuth';
+import withError from '@/lib/middleware/withError';
 import { JwtPayload } from 'jsonwebtoken';
 
 async function handler(
@@ -17,4 +18,4 @@ async function handler(
   );
 }
 
-export const GET = withAuth(withLocale(handler));
+export const GET = withLocale(withAuth(withError(handler)));

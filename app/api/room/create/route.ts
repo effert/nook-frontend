@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import withLocale from '@/lib/middleware/withLocale';
+import withError from '@/lib/middleware/withError';
 import { JwtPayload } from 'jsonwebtoken';
 import { generateRandomString } from '@/lib/utils';
 import RoomModal from '@/app/api/modal/roomModal';
@@ -39,4 +40,4 @@ async function handler(
   );
 }
 
-export const POST = withLocale(handler);
+export const POST = withLocale(withError(handler));

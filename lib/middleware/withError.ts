@@ -16,12 +16,11 @@ export default function withError(
     user?: JwtPayload
   ) => {
     try {
-      console.log(t);
-      return handler(req, context, t, user);
+      return await handler(req, context, t, user);
     } catch (err) {
       return NextResponse.json(
         {
-          message: 'Internal server error',
+          message: t['Internal server error'],
           success: false,
         },
         {

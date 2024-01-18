@@ -23,11 +23,11 @@ export default function withAuth(
       const token = authHeader.split(' ')[1];
       try {
         const user = jwt.verify(token, SECRET_KEY) as JwtPayload;
-        return handler(req, context, t, user);
+        return await handler(req, context, t, user);
       } catch (error) {
         return NextResponse.json(
           {
-            message: 'Access denied',
+            message: t['Access denied'],
             success: false,
           },
           {
@@ -38,7 +38,7 @@ export default function withAuth(
     } else {
       return NextResponse.json(
         {
-          message: 'Authentication required',
+          message: t['Authentication required'],
           success: false,
         },
         {
