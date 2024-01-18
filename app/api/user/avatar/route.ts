@@ -7,7 +7,7 @@ import UserModal from '@/app/api/modal/userModal';
 
 async function handler(
   req: NextRequest,
-  res: NextResponse,
+  context: { params: Record<string, string> },
   t: Record<string, string>,
   user?: JwtPayload
 ): Promise<NextResponse> {

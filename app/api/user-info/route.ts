@@ -7,7 +7,7 @@ import { omit } from 'lodash';
 
 async function getHandler(
   req: NextRequest,
-  res: NextResponse,
+  context: { params: Record<string, string> },
   t: Record<string, string>,
   user?: JwtPayload
 ): Promise<NextResponse> {

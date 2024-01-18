@@ -6,7 +6,7 @@ import UserModal from '@/app/api/modal/userModal';
 
 async function getHandler(
   req: NextRequest,
-  res: NextResponse,
+  context: { params: Record<string, string> },
   t: Record<string, string>,
   user?: JwtPayload
 ): Promise<NextResponse> {
@@ -23,7 +23,6 @@ async function getHandler(
     );
   }
 
-  console.log(121, user);
   const rooms = await UserModal.getUserRooms(user.email);
 
   return NextResponse.json(
