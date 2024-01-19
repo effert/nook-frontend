@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import UserModal from '@/app/api/modal/userModal';
 import withLocale from '@/lib/middleware/withLocale';
 import withError from '@/lib/middleware/withError';
+import { omit } from 'lodash';
 
 const { SECRET_KEY = '' } = process.env;
 
@@ -43,7 +44,11 @@ async function postHandler(
           message: t['Login successful'],
           data: {
             token,
-            user,
+            user: omit(user, [
+              'password',
+              'tempPassword',
+              'tempPasswordExpiry',
+            ]),
           },
           success: true,
         },

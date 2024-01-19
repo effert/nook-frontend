@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "MODE=dev next dev --turbo",
     "build": "MODE=prod next build",
-    "start": "MODE=prod next start",
+    "start": "MODE=prod next start -p 3002",
     "lint": "next lint",
     "prettier": "prettier --write .",
     "prepare": "husky install",
