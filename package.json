@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "MODE=dev next dev --turbo",
+    "dev": "MODE=dev next dev --turbo -p 3002",
     "build": "MODE=prod next build",
     "start": "MODE=prod next start -p 3002",
     "lint": "next lint",

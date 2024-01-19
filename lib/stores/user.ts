@@ -12,10 +12,16 @@ let localStorage: Storage;
 if (typeof window !== 'undefined') {
   localStorage = window.localStorage;
 }
+function getUser() {
+  try {
+    return JSON.parse(localStorage?.getItem(USER_INFO) || '{}');
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+}
 const useStore = create<UserInfo>((set) => ({
-  user: localStorage?.getItem(USER_INFO)
-    ? JSON.parse(localStorage.getItem(USER_INFO) as string)
-    : undefined,
+  user: getUser(),
   setUser: (user) => set({ user }),
   clear: () => set({ user: undefined }),
 }));
