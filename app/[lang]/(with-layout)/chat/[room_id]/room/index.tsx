@@ -97,7 +97,12 @@ export default function Room({
         token || 'anonymous'
       }`,
       (msg) => {
-        const newMessage: TMessage = JSON.parse(msg);
+        let newMessage: TMessage;
+        try {
+          newMessage = JSON.parse(msg);
+        } catch (err) {
+          return;
+        }
         if (newMessage.type === MessageType.ERROR) {
           message.error(newMessage.content);
           router.push('/chat');
