@@ -49,7 +49,7 @@ export default function LoginForm({
       localStorage.setItem(TOKEN, `bearer ${resp.token}`);
       localStorage.setItem(USER_INFO, JSON.stringify(resp.user));
       setUser(resp.user);
-      router.push('/chat');
+      // router.push('/chat');
     }
   };
 
@@ -69,7 +69,6 @@ export default function LoginForm({
   return (
     <form className="text-gray-700 dark:text-white">
       <div>
-        <div>111</div>
         <label className="block text-sm font-bold mb-2" htmlFor="account">
           {t['account']}
           <Tooltip title={t['Use email to get a dynamic password']}>
