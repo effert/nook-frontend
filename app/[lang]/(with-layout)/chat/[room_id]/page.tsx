@@ -14,9 +14,10 @@ import UserInfo from './user-info';
 import RoomListWrap from './room-list-wrap';
 import RoomNameH5 from './room-name-h5';
 
+const cookieStore = cookies();
+const authorization = cookieStore.get(TOKEN);
+
 async function fetchUserInfo() {
-  const cookieStore = cookies();
-  const authorization = cookieStore.get(TOKEN);
   if (authorization) {
     const token = authorization.value;
     let resp = await fetch(`${process.env.BASE_URL}/user-info`, {
@@ -33,8 +34,6 @@ async function fetchUserInfo() {
 }
 
 async function getRoomList() {
-  const cookieStore = cookies();
-  const authorization = cookieStore.get(TOKEN);
   if (authorization) {
     const token = authorization.value;
     let resp = await fetch(`${process.env.BASE_URL}/user/rooms`, {
