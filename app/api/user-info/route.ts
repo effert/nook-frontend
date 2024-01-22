@@ -42,4 +42,4 @@ async function getHandler(
   );
 }
 
-export const GET = withLocale(withAuth(withError(getHandler)));
+export const GET = withLocale(withError(getHandler));
