@@ -18,16 +18,20 @@ async function fetchUserInfo() {
   const cookieStore = cookies();
   const authorization = cookieStore.get(TOKEN);
   if (authorization) {
-    const token = authorization.value;
-    let resp = await fetch(`${process.env.BASE_URL}/user-info`, {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    });
-    let res = await resp.json();
-    return get(res, 'data.user', {});
+    try {
+      const token = authorization.value;
+      let resp = await fetch(`${process.env.BASE_URL}/user-info`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
+      let res = await resp.json();
+      return get(res, 'data.user', {});
+    } catch (err) {
+      return null;
+    }
   }
   return null;
 }
@@ -36,16 +40,20 @@ async function getRoomList() {
   const cookieStore = cookies();
   const authorization = cookieStore.get(TOKEN);
   if (authorization) {
-    const token = authorization.value;
-    let resp = await fetch(`${process.env.BASE_URL}/user/rooms`, {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    });
-    let res = await resp.json();
-    return get(res, 'data.data', []);
+    try {
+      const token = authorization.value;
+      let resp = await fetch(`${process.env.BASE_URL}/user/rooms`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
+      let res = await resp.json();
+      return get(res, 'data.data', []);
+    } catch (err) {
+      return [];
+    }
   }
   return [];
 }
@@ -87,10 +95,10 @@ const Page = async ({
   const D = await getDictionary(lang);
   const t = D.chat;
 
-  let userInfo: TUser | null = null;
-  let roomList: TRoom[] = [];
-  // let userInfo: TUser | null = await fetchUserInfo();
-  // let roomList = await getRoomList();
+  // let userInfo: TUser | null = null;
+  // let roomList: TRoom[] = [];
+  let userInfo: TUser | null = await fetchUserInfo();
+  let roomList = await getRoomList();
   let roomInfo:
     | (TRoom & {
         isPasswordCorrect?: boolean;
