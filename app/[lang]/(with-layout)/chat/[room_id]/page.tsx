@@ -96,8 +96,8 @@ const Page = async ({
     | undefined;
   let members;
   if (room_id) {
-    roomInfo = await getRoomInfo(room_id, password);
-    members = await getRoomMembers(room_id);
+    // roomInfo = await getRoomInfo(room_id, password);
+    // members = await getRoomMembers(room_id);
   }
   if (roomInfo?.password && !roomInfo.isPasswordCorrect) {
     redirect('/');
