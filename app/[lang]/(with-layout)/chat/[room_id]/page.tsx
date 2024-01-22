@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Locale } from '@/lib/utils/get-dictionary';
 import { getDictionary } from '@/lib/utils/get-dictionary';
 import Room from './room';
@@ -133,22 +133,26 @@ const Page = async ({
         className={`overflow-y-auto flex-1 border-b border-b-slate-400 ${innerClassName}`}
       >
         <NewRoomBtn t={t} />
-        {mergeRoomList(roomList, roomInfo).map((ele: TRoom) => (
-          <a
-            key={ele.id}
-            className="block px-2 py-1 my-2 cursor-pointer truncate hover:bg-gray-200 dark:hover:bg-slate-800"
-            href={`/chat/${ele.id}`}
-          >
-            {ele.roomName}
-          </a>
-        ))}
+        <Suspense fallback={<p>loading roomList...</p>}>
+          {mergeRoomList(roomList, roomInfo).map((ele: TRoom) => (
+            <a
+              key={ele.id}
+              className="block px-2 py-1 my-2 cursor-pointer truncate hover:bg-gray-200 dark:hover:bg-slate-800"
+              href={`/chat/${ele.id}`}
+            >
+              {ele.roomName}
+            </a>
+          ))}
+        </Suspense>
       </div>
-      {userInfo && (
-        <div className="h-32 p-3">
-          <UserInfo user={userInfo} t={t} />
-          <div className="p-2">{t['note']}</div>
-        </div>
-      )}
+      <Suspense fallback={<p>loading userInfo...</p>}>
+        {userInfo && (
+          <div className="h-32 p-3">
+            <UserInfo user={userInfo} t={t} />
+            <div className="p-2">{t['note']}</div>
+          </div>
+        )}
+      </Suspense>
     </div>
   );
 
@@ -157,23 +161,25 @@ const Page = async ({
       {roomListDom('hidden md:flex', 'px-3 pt-4')}
       <RoomListWrap>{roomListDom('flex')}</RoomListWrap>
       {roomInfo && room_id ? (
-        <div className="flex-1 flex flex-col w-[calc(100%-240px)]">
-          <div className="md:hidden px-3 pt-4">
-            <RoomNameH5 roomInfo={roomInfo} />
+        <Suspense fallback={<p>loading roomInfo...</p>}>
+          <div className="flex-1 flex flex-col w-[calc(100%-240px)]">
+            <div className="md:hidden px-3 pt-4">
+              <RoomNameH5 roomInfo={roomInfo} />
+            </div>
+            <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
+              <RoomName t={t} roomInfo={roomInfo} />
+              <MessageBtn t={t} roomInfo={roomInfo} />
+            </div>
+            <div className="flex flex-1 h-[calc(100%-61px)]">
+              <Room
+                t={t}
+                roomId={room_id}
+                propMembers={members}
+                roomInfo={roomInfo}
+              />
+            </div>
           </div>
-          <div className="px-3 py-4 text-xl font-medium border-b border-b-slate-400 flex gap-4 justify-between">
-            <RoomName t={t} roomInfo={roomInfo} />
-            <MessageBtn t={t} roomInfo={roomInfo} />
-          </div>
-          <div className="flex flex-1 h-[calc(100%-61px)]">
-            <Room
-              t={t}
-              roomId={room_id}
-              propMembers={members}
-              roomInfo={roomInfo}
-            />
-          </div>
-        </div>
+        </Suspense>
       ) : (
         <div className="flex-1 h-full flex justify-center items-center">
           <h1 className="text-4xl">{t['welcome to NOOK']}</h1>
