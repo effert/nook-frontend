@@ -28,7 +28,7 @@ async function getHandler(
   return NextResponse.json(
     {
       data: {
-        rooms,
+        data: rooms,
       },
       success: true,
     },

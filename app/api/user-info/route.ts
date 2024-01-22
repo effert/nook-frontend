@@ -28,7 +28,7 @@ async function getHandler(
   return NextResponse.json(
     {
       data: {
-        data: omit(userInfo, [
+        user: omit(userInfo, [
           'password',
           'tempPassword',
           'tempPasswordExpiry',
