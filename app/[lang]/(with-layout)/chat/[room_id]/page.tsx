@@ -19,7 +19,8 @@ async function fetchUserInfo() {
   const authorization = cookieStore.get(TOKEN);
   if (authorization) {
     try {
-      const token = authorization.value;
+      const token =
+        'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiIxMjA0Njc2NTgwQHFxLmNvbSIsImlhdCI6MTcwNTg5ODQ3OSwiZXhwIjoxNzA1OTg0ODc5fQ.QqHaaSavM9cwCLyTxruUITDX-RT7FX1MqPhu38oWWf8';
       let resp = await fetch(`${process.env.BASE_URL}/user-info`, {
         method: 'get',
         headers: {
