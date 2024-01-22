@@ -87,8 +87,10 @@ const Page = async ({
   const D = await getDictionary(lang);
   const t = D.chat;
 
-  let userInfo: TUser | null = await fetchUserInfo();
-  let roomList = await getRoomList();
+  let userInfo: TUser | null = null;
+  let roomList: TRoom[] = [];
+  // let userInfo: TUser | null = await fetchUserInfo();
+  // let roomList = await getRoomList();
   let roomInfo:
     | (TRoom & {
         isPasswordCorrect?: boolean;
